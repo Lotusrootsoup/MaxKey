@@ -23,20 +23,29 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class LoginConfig {
     
-	@Value("${maxkey.login.captcha}")
+	@Value("${maxkey.login.captcha:true}")
     boolean captcha;
 	
-    @Value("${maxkey.login.mfa}")
+	@Value("${maxkey.login.captcha.type:TEXT}")
+    String captchaType;
+	
+    @Value("${maxkey.login.mfa:false}")
     boolean mfa;
     
-    @Value("${maxkey.login.kerberos}")
+    @Value("${maxkey.login.kerberos:false}")
     boolean kerberos;
     
-    @Value("${maxkey.login.remeberme}")
+    @Value("${maxkey.login.remeberme:false}")
     boolean remeberMe;
     
-    @Value("${maxkey.login.wsfederation}")
+    @Value("${maxkey.login.wsfederation:false}")
     boolean wsFederation;
+    
+    @Value("${maxkey.login.cas.serverUrlPrefix:http://sso.maxkey.top/sign/authz/cas}")
+    String casServerUrlPrefix;
+    
+    @Value("${maxkey.login.cas.service:http://mgt.maxkey.top/maxkey-mgt/passport/trust/auth}")
+    String casService;
 
     /**
      *  .
@@ -86,7 +95,31 @@ public class LoginConfig {
         this.wsFederation = wsFederation;
     }
     
-    @Override
+    public String getCasServerUrlPrefix() {
+		return casServerUrlPrefix;
+	}
+
+	public void setCasServerUrlPrefix(String casServerUrlPrefix) {
+		this.casServerUrlPrefix = casServerUrlPrefix;
+	}
+
+	public String getCasService() {
+		return casService;
+	}
+
+	public void setCasService(String casService) {
+		this.casService = casService;
+	}
+
+	public String getCaptchaType() {
+		return captchaType;
+	}
+
+	public void setCaptchaType(String captchaType) {
+		this.captchaType = captchaType;
+	}
+
+	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
 		builder.append("LoginConfig [mfa=");

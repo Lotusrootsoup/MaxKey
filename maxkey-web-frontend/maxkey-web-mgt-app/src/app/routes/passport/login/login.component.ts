@@ -67,6 +67,7 @@ export class UserLoginComponent implements OnInit, OnDestroy {
   type = 0;
   loading = false;
   state = '';
+  captchaType = '';
   imageCaptcha = '';
   passwordVisible = false;
 
@@ -96,11 +97,9 @@ export class UserLoginComponent implements OnInit, OnDestroy {
           // 清空路由复用信息
           //console.log(res.data);
           this.state = res.data.state;
+          this.captchaType = res.data.captcha;
           //init image captcha
-          this.imageCaptchaService.captcha({ state: this.state }).subscribe(res => {
-            this.imageCaptcha = res.data.image;
-            this.cdr.detectChanges();
-          });
+          this.getImageCaptcha();
         }
       });
   }
@@ -110,9 +109,14 @@ export class UserLoginComponent implements OnInit, OnDestroy {
   }
 
   getImageCaptcha(): void {
-    this.imageCaptchaService.captcha({ state: this.state }).subscribe(res => {
-      this.imageCaptcha = res.data.image;
-      this.cdr.detectChanges();
+    this.imageCaptchaService.captcha({ state: this.state, captcha: this.captchaType }).subscribe(res => {
+      if (res.code === 0) {
+        this.imageCaptcha = res.data.image;
+        this.cdr.detectChanges();
+      } else {
+        //令牌失效时，重新刷新页面
+        window.location.reload();
+      }
     });
   }
 

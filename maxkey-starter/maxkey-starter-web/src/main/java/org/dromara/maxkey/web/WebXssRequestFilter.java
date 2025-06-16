@@ -20,7 +20,7 @@ package org.dromara.maxkey.web;
 import java.io.IOException;
 import java.util.Enumeration;
 import java.util.concurrent.ConcurrentHashMap;
-
+import java.util.regex.Pattern;
 
 import org.apache.commons.text.StringEscapeUtils;
 import org.slf4j.Logger;
@@ -39,6 +39,11 @@ public class WebXssRequestFilter  extends GenericFilterBean {
 	
 	static final  ConcurrentHashMap <String,String> skipUrlMap = new  ConcurrentHashMap <>();
 	static final  ConcurrentHashMap <String,String> skipParameterName = new  ConcurrentHashMap <>();
+	
+	/**
+	 * 特殊字符 ' -- #
+	 */
+	public final static Pattern specialCharacterRegex = Pattern.compile(".*((\\%27)|(')|(\\')|(--)|(\\-\\-)|(\\%23)|(#)).*", Pattern.CASE_INSENSITIVE);
 	
 	static {
 		//add or update
@@ -85,11 +90,29 @@ public class WebXssRequestFilter  extends GenericFilterBean {
 		          String value = request.getParameter(key);
 		          _logger.trace("parameter name {} , value {}" , key, value);
 		          String tempValue = value;
+		          String  lowerCaseTempValue = tempValue.toLowerCase();
+		          /**
+		           * StringEscapeUtils.escapeHtml4
+		           * " 转义为 &quot;
+		           * & 转义为 &amp;
+		           * < 转义为 &lt;
+		           * > 转义为 &gt;
+		           * 
+		           * 以下符号过滤
+		           * ' 
+		           * --
+		           * #
+		           * 
+		           * script
+		           * eval
+		           * 
+		           */
 		          if(!StringEscapeUtils.escapeHtml4(tempValue).equals(value)
-		        		  ||tempValue.toLowerCase().indexOf("script")>-1
-		        		  ||tempValue.toLowerCase().replace(" ", "").indexOf("eval(")>-1) {
+		        		  ||specialCharacterRegex.matcher(value).matches()
+		        		  ||lowerCaseTempValue.indexOf("script")>-1
+		        		  ||lowerCaseTempValue.replace(" ", "").indexOf("eval(")>-1) {
 		        	  isWebXss = true;
-		        	  _logger.error("parameter name {} , value {}, contains dangerous content ! ",key,value);
+		        	  _logger.error("dangerous ! parameter {} , value {}",key,value);
 		        	  break;
 		          }
 	          }

@@ -27,9 +27,9 @@ import org.dromara.maxkey.authn.support.rememberme.AbstractRemeberMeManager;
 import org.dromara.maxkey.authn.support.rememberme.JdbcRemeberMeManager;
 import org.dromara.maxkey.configuration.ApplicationConfig;
 import org.dromara.maxkey.password.sms.SmsOtpAuthnService;
-import org.dromara.maxkey.persistence.repository.LoginHistoryRepository;
-import org.dromara.maxkey.persistence.repository.LoginRepository;
-import org.dromara.maxkey.persistence.repository.PasswordPolicyValidator;
+import org.dromara.maxkey.persistence.service.CnfPasswordPolicyService;
+import org.dromara.maxkey.persistence.service.PasswordPolicyValidatorService;
+import org.dromara.maxkey.persistence.service.impl.PasswordPolicyValidatorServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -134,18 +134,10 @@ public class AuthnProviderAutoConfiguration {
     }
 
     @Bean
-    PasswordPolicyValidator passwordPolicyValidator(JdbcTemplate jdbcTemplate,MessageSource messageSource) {
-        return new PasswordPolicyValidator(jdbcTemplate,messageSource);
-    }
-
-    @Bean
-    LoginRepository loginRepository(JdbcTemplate jdbcTemplate) {
-        return new LoginRepository(jdbcTemplate);
-    }
-
-    @Bean
-    LoginHistoryRepository loginHistoryRepository(JdbcTemplate jdbcTemplate) {
-        return new LoginHistoryRepository(jdbcTemplate);
+    PasswordPolicyValidatorService passwordPolicyValidatorService(
+    		CnfPasswordPolicyService cnfPasswordPolicyService,
+    		MessageSource messageSource) {
+        return new PasswordPolicyValidatorServiceImpl(cnfPasswordPolicyService,messageSource);
     }
 
     /**

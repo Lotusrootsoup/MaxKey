@@ -22,16 +22,16 @@ import java.util.List;
 
 import org.dromara.maxkey.authn.SignPrincipal;
 import org.dromara.maxkey.authn.realm.ldap.LdapAuthenticationRealmService;
+import org.dromara.maxkey.authn.session.SessionCategory;
 import org.dromara.maxkey.entity.history.HistoryLogin;
 import org.dromara.maxkey.entity.idm.Groups;
 import org.dromara.maxkey.entity.idm.UserInfo;
 import org.dromara.maxkey.ip2location.IpLocationParser;
 import org.dromara.maxkey.ip2location.Region;
-import org.dromara.maxkey.persistence.repository.LoginHistoryRepository;
-import org.dromara.maxkey.persistence.repository.LoginRepository;
-import org.dromara.maxkey.persistence.repository.PasswordPolicyValidator;
+import org.dromara.maxkey.persistence.service.HistoryLoginService;
+import org.dromara.maxkey.persistence.service.LoginService;
+import org.dromara.maxkey.persistence.service.PasswordPolicyValidatorService;
 import org.dromara.maxkey.persistence.service.UserInfoService;
-import org.dromara.maxkey.util.DateUtils;
 import org.dromara.maxkey.web.WebConstants;
 import org.dromara.maxkey.web.WebContext;
 import org.slf4j.Logger;
@@ -50,11 +50,11 @@ public abstract class AbstractAuthenticationRealm {
 
     protected JdbcTemplate jdbcTemplate;
     
-    protected PasswordPolicyValidator passwordPolicyValidator;
+    protected PasswordPolicyValidatorService passwordPolicyValidatorService;
     
-    protected LoginRepository loginRepository;
+    protected LoginService loginService;
 
-    protected LoginHistoryRepository loginHistoryRepository;
+    protected HistoryLoginService historyLoginService;
     
     protected UserInfoService userInfoService;
     
@@ -74,22 +74,22 @@ public abstract class AbstractAuthenticationRealm {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public PasswordPolicyValidator getPasswordPolicyValidator() {
-        return passwordPolicyValidator;
+    public PasswordPolicyValidatorService getPasswordPolicyValidatorService() {
+        return passwordPolicyValidatorService;
     }
 
-    public LoginRepository getLoginRepository() {
-        return loginRepository;
+    public LoginService getLoginService() {
+        return loginService;
     }
 
     public UserInfo loadUserInfo(String username, String password) {
-        return loginRepository.find(username, password);
+        return loginService.find(username, password);
     }
 
     public abstract boolean passwordMatches(UserInfo userInfo, String password);
     
     public List<Groups> queryGroups(UserInfo userInfo) {
-       return loginRepository.queryGroups(userInfo);
+       return loginService.queryGroups(userInfo);
     }
 
     /**
@@ -99,7 +99,7 @@ public abstract class AbstractAuthenticationRealm {
      * @return ArrayList<GrantedAuthority>
      */
     public List<GrantedAuthority> grantAuthority(UserInfo userInfo) {
-        return loginRepository.grantAuthority(userInfo);
+        return loginService.grantAuthority(userInfo);
     }
     
     /**
@@ -109,7 +109,7 @@ public abstract class AbstractAuthenticationRealm {
      * @return ArrayList<GrantedAuthority Apps>
      */
     public List<GrantedAuthority> queryAuthorizedApps(List<GrantedAuthority> grantedAuthoritys) {
-        return loginRepository.queryAuthorizedApps(grantedAuthoritys);
+        return loginService.queryAuthorizedApps(grantedAuthoritys);
     }
 
     /**
@@ -149,6 +149,7 @@ public abstract class AbstractAuthenticationRealm {
         historyLogin.setUsername(userInfo.getUsername());
         historyLogin.setDisplayName(userInfo.getDisplayName());
         historyLogin.setInstId(userInfo.getInstId());
+        historyLogin.setCategory(SessionCategory.SIGN);
         
         Region ipRegion =ipLocationParser.region(userInfo.getLastLoginIp());
         if(ipRegion != null) {
@@ -157,9 +158,11 @@ public abstract class AbstractAuthenticationRealm {
         	historyLogin.setCity(ipRegion.getCity());
         	historyLogin.setLocation(ipRegion.getAddr());
         }
-        loginHistoryRepository.login(historyLogin);
+        historyLoginService.login(historyLogin);
         
-        loginRepository.updateLastLogin(userInfo);
+        if(WebConstants.LOGIN_RESULT.SUCCESS.equalsIgnoreCase(message)) {
+        	loginService.updateLastLogin(userInfo);
+        }
 
         return true;
     }

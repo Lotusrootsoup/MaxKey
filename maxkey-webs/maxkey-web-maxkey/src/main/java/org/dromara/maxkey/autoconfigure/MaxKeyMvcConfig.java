@@ -17,25 +17,20 @@
 
 package org.dromara.maxkey.autoconfigure;
 
-import java.util.List;
-
 import org.dromara.maxkey.authn.provider.AbstractAuthenticationProvider;
 import org.dromara.maxkey.authn.support.basic.BasicEntryPoint;
 import org.dromara.maxkey.authn.support.httpheader.HttpHeaderEntryPoint;
 import org.dromara.maxkey.authn.support.kerberos.HttpKerberosEntryPoint;
 import org.dromara.maxkey.authn.support.kerberos.KerberosService;
-import org.dromara.maxkey.authn.web.CurrentUserMethodArgumentResolver;
 import org.dromara.maxkey.authn.web.interceptor.PermissionInterceptor;
 import org.dromara.maxkey.configuration.ApplicationConfig;
-import org.dromara.maxkey.web.interceptor.HistorySignOnAppInterceptor;
+import org.dromara.maxkey.web.interceptor.HistorySingleSignOnInterceptor;
 import org.dromara.maxkey.web.interceptor.SingleSignOnInterceptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
-import org.springframework.context.annotation.Bean;
-import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -70,7 +65,7 @@ public class MaxKeyMvcConfig implements WebMvcConfigurer {
     SingleSignOnInterceptor singleSignOnInterceptor;
     
     @Autowired
-    HistorySignOnAppInterceptor historySignOnAppInterceptor;
+    HistorySingleSignOnInterceptor historySingleSignOnInterceptor;
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
@@ -112,6 +107,7 @@ public class MaxKeyMvcConfig implements WebMvcConfigurer {
         		.addPathPatterns("/logout")
                 .addPathPatterns("/logout/**")
                 .addPathPatterns("/authz/refused")
+                .excludePathPatterns("/logon/oauth20/**/**")
                 .excludePathPatterns("/swagger-ui/**")
                 .excludePathPatterns("/swagger-resources/**")
                 .excludePathPatterns("/v3/api-docs/**")
@@ -167,7 +163,7 @@ public class MaxKeyMvcConfig implements WebMvcConfigurer {
         ;
         logger.debug("add Single SignOn Interceptor");
         
-        registry.addInterceptor(historySignOnAppInterceptor)
+        registry.addInterceptor(historySingleSignOnInterceptor)
                 .addPathPatterns("/authz/basic/*")
                 .addPathPatterns("/authz/ltpa/*")
                 //Extend api

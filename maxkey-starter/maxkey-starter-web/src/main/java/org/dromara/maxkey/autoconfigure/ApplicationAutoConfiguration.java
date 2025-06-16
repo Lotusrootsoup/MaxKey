@@ -34,7 +34,6 @@ import org.dromara.maxkey.persistence.cache.InMemoryMomentaryService;
 import org.dromara.maxkey.persistence.cache.MomentaryService;
 import org.dromara.maxkey.persistence.cache.RedisMomentaryService;
 import org.dromara.maxkey.persistence.redis.RedisConnectionFactory;
-import org.dromara.maxkey.persistence.repository.InstitutionsRepository;
 import org.dromara.maxkey.util.IdGenerator;
 import org.dromara.maxkey.util.SnowFlakeId;
 import org.dromara.maxkey.web.WebContext;
@@ -44,7 +43,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.io.Resource;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.DelegatingPasswordEncoder;
@@ -65,11 +63,6 @@ public class ApplicationAutoConfiguration {
     @Bean
     DataSourceTransactionManager transactionManager(DataSource dataSource) {
         return new DataSourceTransactionManager(dataSource);
-    }
-
-    @Bean
-    InstitutionsRepository institutionsRepository(JdbcTemplate jdbcTemplate) {
-        return new InstitutionsRepository(jdbcTemplate);
     }
 
     /**

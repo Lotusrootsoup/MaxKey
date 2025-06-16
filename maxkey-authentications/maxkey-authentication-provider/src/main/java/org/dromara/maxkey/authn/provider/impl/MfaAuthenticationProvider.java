@@ -24,7 +24,6 @@ import org.dromara.maxkey.authn.realm.AbstractAuthenticationRealm;
 import org.dromara.maxkey.authn.session.SessionManager;
 import org.dromara.maxkey.configuration.ApplicationConfig;
 import org.dromara.maxkey.constants.ConstsLoginType;
-import org.dromara.maxkey.entity.Institutions;
 import org.dromara.maxkey.entity.idm.UserInfo;
 import org.dromara.maxkey.web.WebConstants;
 import org.dromara.maxkey.web.WebContext;
@@ -89,13 +88,13 @@ public class MfaAuthenticationProvider extends AbstractAuthenticationProvider {
 	        mfacaptchaValid(loginCredential.getOtpCaptcha(),userInfo);
 	        
 	        //Validate PasswordPolicy
-	        authenticationRealm.getPasswordPolicyValidator().passwordPolicyValid(userInfo);
+	        authenticationRealm.getLoginService().passwordPolicyValid(userInfo);
 	             
 	        //Match password 
 	        authenticationRealm.passwordMatches(userInfo, loginCredential.getPassword());
 
 	        //apply PasswordSetType and resetBadPasswordCount
-	        authenticationRealm.getPasswordPolicyValidator().applyPasswordPolicy(userInfo);
+	        authenticationRealm.getLoginService().applyPasswordPolicy(userInfo);
 	        
 	        authenticationToken = createOnlineTicket(loginCredential,userInfo);
 	        // user authenticated

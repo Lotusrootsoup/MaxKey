@@ -32,7 +32,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -90,6 +89,23 @@ public class ProfileController {
         
         return new Message<UserInfo>(Message.FAIL);
         
+    }
+	
+	/**
+     * AuthnType.
+     * 
+     * @param userInfo
+     * @param result
+     * @return
+     */
+	@PutMapping("/updateAuthnType")
+	public Message<UserInfo> updateAuthnType(@RequestBody UserInfo userInfo,@CurrentUser UserInfo currentUser) {
+		userInfo.setId(currentUser.getId());
+        logger.debug("updateAuthnType {}",userInfo);
+        if (userInfoService.updateAuthnType(userInfo)) {
+        	return new Message<>(Message.SUCCESS);
+        } 
+        return new Message<>(Message.FAIL);
     }
 
 }

@@ -18,6 +18,7 @@
 package org.dromara.maxkey.configuration;
 
 import org.dromara.maxkey.constants.ConstsDatabase;
+import org.dromara.maxkey.constants.ConstsPersistence;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
@@ -64,11 +65,11 @@ public class ApplicationConfig {
     @Value("${server.port:8080}")
     private int port;
     
-    @Value("${server.servlet.session.timeout:1800}")
-    private int sessionTimeout;
-
     @Value("${maxkey.server.provision:false}")
     private boolean provision;
+    
+    @Value("${maxkey.server.persistence}") 
+    int persistence;
     
     @Value("${maxkey.notices.visible:false}")
     private boolean noticesVisible;
@@ -204,6 +205,22 @@ public class ApplicationConfig {
     	return provision;
 	}
     
+	public int getPersistence() {
+		return persistence;
+	}
+
+	public void setPersistence(int persistence) {
+		this.persistence = persistence;
+	}
+    
+	public boolean isPersistenceRedis() {
+		return persistence == ConstsPersistence.REDIS;
+	}
+	
+	public boolean isPersistenceInmemory() {
+		return persistence == ConstsPersistence.INMEMORY;
+	}
+	
 	public String getMgtUri() {
 		return mgtUri;
 	}
@@ -218,14 +235,6 @@ public class ApplicationConfig {
 
 	public void setAuthzUri(String authzUri) {
 		this.authzUri = authzUri;
-	}
-
-	public int getSessionTimeout() {
-		return sessionTimeout;
-	}
-
-	public void setSessionTimeout(int sessionTimeout) {
-		this.sessionTimeout = sessionTimeout;
 	}
 
 	public boolean isNoticesVisible() {

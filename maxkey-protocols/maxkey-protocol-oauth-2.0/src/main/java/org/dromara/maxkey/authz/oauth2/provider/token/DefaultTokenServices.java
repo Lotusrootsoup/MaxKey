@@ -14,14 +14,19 @@
 package org.dromara.maxkey.authz.oauth2.provider.token;
 
 import java.util.Date;
+import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 
+import org.dromara.maxkey.authn.SignPrincipal;
+import org.dromara.maxkey.authn.session.SessionManager;
+import org.dromara.maxkey.authn.session.VisitedDto;
 import org.dromara.maxkey.authz.oauth2.common.DefaultExpiringOAuth2RefreshToken;
 import org.dromara.maxkey.authz.oauth2.common.DefaultOAuth2AccessToken;
 import org.dromara.maxkey.authz.oauth2.common.DefaultOAuth2RefreshToken;
 import org.dromara.maxkey.authz.oauth2.common.ExpiringOAuth2RefreshToken;
 import org.dromara.maxkey.authz.oauth2.common.OAuth2AccessToken;
+import org.dromara.maxkey.authz.oauth2.common.OAuth2Constants;
 import org.dromara.maxkey.authz.oauth2.common.OAuth2RefreshToken;
 import org.dromara.maxkey.authz.oauth2.common.exceptions.InvalidGrantException;
 import org.dromara.maxkey.authz.oauth2.common.exceptions.InvalidScopeException;
@@ -31,7 +36,11 @@ import org.dromara.maxkey.authz.oauth2.provider.ClientRegistrationException;
 import org.dromara.maxkey.authz.oauth2.provider.OAuth2Authentication;
 import org.dromara.maxkey.authz.oauth2.provider.OAuth2Request;
 import org.dromara.maxkey.authz.oauth2.provider.TokenRequest;
+import org.dromara.maxkey.entity.apps.Apps;
 import org.dromara.maxkey.entity.apps.oauth2.provider.ClientDetails;
+import org.dromara.maxkey.persistence.service.AppsService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
@@ -54,6 +63,7 @@ import org.springframework.util.Assert;
  */
 public class DefaultTokenServices implements AuthorizationServerTokenServices, ResourceServerTokenServices,
 		ConsumerTokenServices, InitializingBean {
+	static final  Logger _logger = LoggerFactory.getLogger(DefaultTokenServices.class);
 
 	private int refreshTokenValiditySeconds = 60 * 60 * 24 * 30; // default 30 days.
 
@@ -70,12 +80,33 @@ public class DefaultTokenServices implements AuthorizationServerTokenServices, R
 	private TokenEnhancer accessTokenEnhancer;
 
 	private AuthenticationManager authenticationManager;
+	
+	private AppsService appsService;
+	
+	private SessionManager sessionManager;
 
 	/**
 	 * Initialize these token services. If no random generator is set, one will be created.
 	 */
 	public void afterPropertiesSet() throws Exception {
 		Assert.notNull(tokenStore, "tokenStore must be set");
+	}
+
+    private void saveVisited(OAuth2Authentication authentication, OAuth2AccessToken accessToken) {
+		//存储oauth、oidc等的token,用户退出时清除
+		if(authentication.getUserAuthentication().getPrincipal() instanceof SignPrincipal principal) {
+			_logger.debug("{}({}) , session {} access for logout clear ",
+					principal.getUsername(),principal.getUserId(),principal.getSessionId());
+			String clientId = authentication.getOAuth2Request().getRequestParameters().get(OAuth2Constants.PARAMETER.CLIENT_ID);
+			_logger.debug("client_id {} token {}",clientId, accessToken);
+			Apps app = appsService.get(clientId, true);
+			VisitedDto visited = new VisitedDto(app,principal.getSessionId());
+			visited.setToken(accessToken.getValue());
+			if (Objects.nonNull(accessToken.getRefreshToken())) {
+				visited.setRefreshToken(accessToken.getRefreshToken().getValue());
+			}
+			sessionManager.visited(principal.getSessionId(), visited);
+		}
 	}
 
 	@Transactional
@@ -97,6 +128,7 @@ public class DefaultTokenServices implements AuthorizationServerTokenServices, R
 			else {
 				// Re-store the access token in case the authentication has changed
 				tokenStore.storeAccessToken(existingAccessToken, authentication);
+                saveVisited(authentication, existingAccessToken);
 				return enhancerToken(existingAccessToken, authentication);
 			}
 		}
@@ -125,6 +157,7 @@ public class DefaultTokenServices implements AuthorizationServerTokenServices, R
 		if (refreshToken != null) {
 			tokenStore.storeRefreshToken(refreshToken, authentication);
 		}
+		saveVisited(authentication, accessToken);
 		return accessToken;
 
 	}
@@ -432,4 +465,13 @@ public class DefaultTokenServices implements AuthorizationServerTokenServices, R
 		this.clientDetailsService = clientDetailsService;
 	}
 
+	public void setAppsService(AppsService appsService) {
+		this.appsService = appsService;
+	}
+
+	public void setSessionManager(SessionManager sessionManager) {
+		this.sessionManager = sessionManager;
+	}
+
+	
 }

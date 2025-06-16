@@ -49,6 +49,8 @@ public class HistoryLogin  extends JpaEntity  implements Serializable{
 	@Column
 	String sessionId;
 	@Column
+	int category;
+	@Column
 	String userId;
 	@Column
 	String username;
@@ -79,17 +81,15 @@ public class HistoryLogin  extends JpaEntity  implements Serializable{
 	@Column
 	String application;
 	@Column
-	String loginUrl;
-	@Column
 	Date loginTime;
 	@Column
 	Date logoutTime;
 	@Column
+	int sessionStatus;
+	@Column
 	private String instId;
 
 	private String instName;
-	
-	int sessionStatus;
 	
 	String startDate;
 	String endDate;
@@ -112,6 +112,14 @@ public class HistoryLogin  extends JpaEntity  implements Serializable{
 
 	public void setSessionId(String sessionId) {
 		this.sessionId = sessionId;
+	}
+
+	public int getCategory() {
+		return category;
+	}
+
+	public void setCategory(int category) {
+		this.category = category;
 	}
 
 	public String getUserId() {
@@ -234,14 +242,6 @@ public class HistoryLogin  extends JpaEntity  implements Serializable{
 		this.application = application;
 	}
 
-	public String getLoginUrl() {
-		return loginUrl;
-	}
-
-	public void setLoginUrl(String loginUrl) {
-		this.loginUrl = loginUrl;
-	}
-
 	public Date getLoginTime() {
 		return loginTime;
 	}
@@ -335,8 +335,6 @@ public class HistoryLogin  extends JpaEntity  implements Serializable{
 		builder.append(platform);
 		builder.append(", application=");
 		builder.append(application);
-		builder.append(", loginUrl=");
-		builder.append(loginUrl);
 		builder.append(", loginTime=");
 		builder.append(loginTime);
 		builder.append(", logoutTime=");

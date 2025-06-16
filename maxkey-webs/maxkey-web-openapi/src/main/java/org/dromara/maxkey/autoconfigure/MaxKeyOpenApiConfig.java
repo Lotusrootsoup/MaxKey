@@ -21,9 +21,9 @@ import org.dromara.maxkey.authn.realm.jdbc.JdbcAuthenticationRealm;
 import org.dromara.maxkey.ip2location.IpLocationParser;
 import org.dromara.maxkey.password.onetimepwd.AbstractOtpAuthn;
 import org.dromara.maxkey.password.onetimepwd.impl.TimeBasedOtpAuthn;
-import org.dromara.maxkey.persistence.repository.LoginHistoryRepository;
-import org.dromara.maxkey.persistence.repository.LoginRepository;
-import org.dromara.maxkey.persistence.repository.PasswordPolicyValidator;
+import org.dromara.maxkey.persistence.service.HistoryLoginService;
+import org.dromara.maxkey.persistence.service.LoginService;
+import org.dromara.maxkey.persistence.service.PasswordPolicyValidatorService;
 import org.dromara.maxkey.persistence.service.UserInfoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,18 +42,18 @@ public class MaxKeyOpenApiConfig{
     JdbcAuthenticationRealm authenticationRealm(
                 @Qualifier("passwordEncoder")
                 PasswordEncoder passwordEncoder,
-                PasswordPolicyValidator passwordPolicyValidator,
-                LoginRepository loginRepository,
-                LoginHistoryRepository loginHistoryRepository,
+                PasswordPolicyValidatorService passwordPolicyValidatorService,
+                LoginService loginService,
+                HistoryLoginService historyLoginService,
                 UserInfoService userInfoService,
                 IpLocationParser  ipLocationParser,
                 JdbcTemplate jdbcTemplate) {
 		
         JdbcAuthenticationRealm authenticationRealm = new JdbcAuthenticationRealm(
         		passwordEncoder,
-        		passwordPolicyValidator,
-        		loginRepository,
-        		loginHistoryRepository,
+        		passwordPolicyValidatorService,
+        		loginService,
+        		historyLoginService,
         		userInfoService,
         		ipLocationParser,
         		jdbcTemplate);

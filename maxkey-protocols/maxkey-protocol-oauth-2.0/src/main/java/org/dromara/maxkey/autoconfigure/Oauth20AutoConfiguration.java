@@ -23,6 +23,7 @@ import java.security.spec.InvalidKeySpecException;
 
 import javax.sql.DataSource;
 
+import org.dromara.maxkey.authn.session.SessionManager;
 import org.dromara.maxkey.authz.oauth2.common.OAuth2Constants;
 import org.dromara.maxkey.authz.oauth2.provider.ClientDetailsService;
 import org.dromara.maxkey.authz.oauth2.provider.OAuth2UserDetailsService;
@@ -31,20 +32,24 @@ import org.dromara.maxkey.authz.oauth2.provider.approval.endpoint.OAuth20UserApp
 import org.dromara.maxkey.authz.oauth2.provider.client.ClientDetailsUserDetailsService;
 import org.dromara.maxkey.authz.oauth2.provider.client.JdbcClientDetailsService;
 import org.dromara.maxkey.authz.oauth2.provider.code.AuthorizationCodeServices;
-import org.dromara.maxkey.authz.oauth2.provider.code.AuthorizationCodeServicesFactory;
+import org.dromara.maxkey.authz.oauth2.provider.code.InMemoryAuthorizationCodeServices;
+import org.dromara.maxkey.authz.oauth2.provider.code.RedisAuthorizationCodeServices;
 import org.dromara.maxkey.authz.oauth2.provider.endpoint.TokenEndpointAuthenticationFilter;
 import org.dromara.maxkey.authz.oauth2.provider.request.DefaultOAuth2RequestFactory;
 import org.dromara.maxkey.authz.oauth2.provider.token.DefaultTokenServices;
 import org.dromara.maxkey.authz.oauth2.provider.token.TokenStore;
+import org.dromara.maxkey.authz.oauth2.provider.token.store.InMemoryTokenStore;
 import org.dromara.maxkey.authz.oauth2.provider.token.store.JwtAccessTokenConverter;
-import org.dromara.maxkey.authz.oauth2.provider.token.store.TokenStoreFactory;
+import org.dromara.maxkey.authz.oauth2.provider.token.store.RedisTokenStore;
 import org.dromara.maxkey.authz.oidc.idtoken.OIDCIdTokenEnhancer;
 import org.dromara.maxkey.configuration.oidc.OIDCProviderMetadataDetails;
+import org.dromara.maxkey.constants.ConstsPersistence;
 import org.dromara.maxkey.crypto.jose.keystore.JWKSetKeyStore;
 import org.dromara.maxkey.crypto.jwt.encryption.service.impl.DefaultJwtEncryptionAndDecryptionService;
 import org.dromara.maxkey.crypto.jwt.signer.service.impl.DefaultJwtSigningAndValidationService;
 import org.dromara.maxkey.persistence.redis.RedisConnectionFactory;
-import org.dromara.maxkey.persistence.repository.LoginRepository;
+import org.dromara.maxkey.persistence.service.AppsService;
+import org.dromara.maxkey.persistence.service.LoginService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
@@ -55,7 +60,6 @@ import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -192,10 +196,17 @@ public class Oauth20AutoConfiguration implements InitializingBean {
     @Bean(name = "oauth20AuthorizationCodeServices")
     AuthorizationCodeServices oauth20AuthorizationCodeServices(
             @Value("${maxkey.server.persistence}") int persistence,
-            JdbcTemplate jdbcTemplate,
             RedisConnectionFactory redisConnFactory) {  
         _logger.debug("OAuth 2 Authorization Code Services init.");
-        return new AuthorizationCodeServicesFactory().getService(persistence, jdbcTemplate, redisConnFactory);
+        AuthorizationCodeServices authorizationCodeServices = null;
+        if (persistence == ConstsPersistence.REDIS) {
+            authorizationCodeServices = new RedisAuthorizationCodeServices(redisConnFactory);
+            _logger.debug("RedisAuthorizationCodeServices");
+        }else {
+        	authorizationCodeServices = new InMemoryAuthorizationCodeServices();
+            _logger.debug("InMemoryAuthorizationCodeServices");
+        }
+        return authorizationCodeServices;
     }
 
     /**
@@ -206,10 +217,17 @@ public class Oauth20AutoConfiguration implements InitializingBean {
     @Bean(name = "oauth20TokenStore")
     TokenStore oauth20TokenStore(
             @Value("${maxkey.server.persistence}") int persistence,
-            JdbcTemplate jdbcTemplate,
             RedisConnectionFactory redisConnFactory) {
         _logger.debug("OAuth 2 TokenStore init.");
-        return new TokenStoreFactory().getTokenStore(persistence, jdbcTemplate, redisConnFactory);
+        TokenStore tokenStore = null;
+        if (persistence == ConstsPersistence.REDIS) {
+            tokenStore = new RedisTokenStore(redisConnFactory);
+            _logger.debug("RedisTokenStore");
+        }else {
+        	 tokenStore = new InMemoryTokenStore();
+             _logger.debug("InMemoryTokenStore");
+        }
+        return tokenStore;
     }
 
     /**
@@ -243,12 +261,16 @@ public class Oauth20AutoConfiguration implements InitializingBean {
     DefaultTokenServices defaultTokenServices(
             JdbcClientDetailsService oauth20JdbcClientDetailsService,
             TokenStore oauth20TokenStore,
-            OIDCIdTokenEnhancer tokenEnhancer) {
+            OIDCIdTokenEnhancer tokenEnhancer,
+            AppsService appsService,
+            SessionManager sessionManager) {
         DefaultTokenServices tokenServices = new DefaultTokenServices();
         tokenServices.setClientDetailsService(oauth20JdbcClientDetailsService);
         tokenServices.setTokenEnhancer(tokenEnhancer);
         tokenServices.setTokenStore(oauth20TokenStore);
         tokenServices.setSupportRefreshToken(true);
+        tokenServices.setAppsService(appsService);
+        tokenServices.setSessionManager(sessionManager);
         _logger.debug("OAuth 2 Token Services init.");
         return tokenServices;
     }
@@ -307,7 +329,7 @@ public class Oauth20AutoConfiguration implements InitializingBean {
     ProviderManager oauth20UserAuthenticationManager(
             @Qualifier("passwordEncoder")
             PasswordEncoder passwordEncoder,
-            LoginRepository loginRepository
+            LoginService loginRepository
     ) {
         
         OAuth2UserDetailsService userDetailsService =new OAuth2UserDetailsService();

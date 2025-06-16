@@ -22,9 +22,8 @@ import java.util.Date;
 
 import org.apache.commons.lang3.StringUtils;
 import org.dromara.maxkey.authn.SignPrincipal;
-import org.dromara.maxkey.crypto.jwt.HMAC512Service;
+import org.dromara.maxkey.crypto.jwt.Hmac512Service;
 import org.dromara.maxkey.entity.idm.UserInfo;
-import org.dromara.maxkey.util.StrUtils;
 import org.dromara.maxkey.web.WebContext;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
@@ -39,7 +38,7 @@ import com.nimbusds.jwt.SignedJWT;
 public class AuthJwtService {
 	private static final  Logger _logger = LoggerFactory.getLogger(AuthJwtService.class);
 	
-	HMAC512Service hmac512Service;
+	Hmac512Service hmac512Service;
 	
 	/**
 	 * JWT with Authentication
@@ -61,7 +60,7 @@ public class AuthJwtService {
 				.issueTime(currentDateTime.toDate())
 				.expirationTime(expirationTime)
 				.claim("locale", userInfo.getLocale())
-				.claim("kid", HMAC512Service.MXK_AUTH_JWK)
+				.claim("kid", Hmac512Service.MXK_AUTH_JWK)
 				.claim("institution", userInfo.getInstId())
 				.build();
 		
@@ -120,18 +119,16 @@ public class AuthJwtService {
 	 * @return true or false
 	 */
 	public boolean validateJwtToken(String authToken) {
-		if(StringUtils.isNotBlank(authToken)) {
+		if(StringUtils.isNotBlank(authToken) && authToken.length() > 20) {
 			try {
 				JWTClaimsSet claims = resolve(authToken);
 				boolean isExpiration = claims.getExpirationTime().after(DateTime.now().toDate());
 				boolean isVerify = hmac512Service.verify(authToken);
-				_logger.debug("JWT Validate {} " , isVerify && isExpiration);
-				
-				if(!(isVerify && isExpiration)) {
-					_logger.debug("HMAC Verify {} , now {} , ExpirationTime {} , is not Expiration : {}" , 
+				boolean isValidate = isVerify && isExpiration;
+				_logger.trace("JWT Validate {} " , isValidate);
+				_logger.debug("HMAC Verify {} , now {} , ExpirationTime {} , is not Expiration : {}" , 
 						isVerify,DateTime.now().toDate(),claims.getExpirationTime(),isExpiration);
-				}
-				return isVerify && isExpiration;
+				return isValidate;
 			} catch (ParseException e) {
 				_logger.error("authToken {}",authToken);
 				_logger.error("ParseException ",e);

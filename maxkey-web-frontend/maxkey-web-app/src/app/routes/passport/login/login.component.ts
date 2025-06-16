@@ -45,9 +45,9 @@ export class UserLoginComponent implements OnInit, OnDestroy {
     providers: NzSafeAny[];
     qrScan: string;
   } = {
-      providers: [],
-      qrScan: ''
-    };
+    providers: [],
+    qrScan: ''
+  };
 
   form: FormGroup;
   error = '';
@@ -140,10 +140,7 @@ export class UserLoginComponent implements OnInit, OnDestroy {
               this.form.get('captcha')?.clearValidators();
             } else {
               //init image captcha
-              this.imageCaptchaService.captcha({ state: this.state, captcha: this.captchaType }).subscribe(res => {
-                this.imageCaptcha = res.data.image;
-                this.cdr.detectChanges();
-              });
+              this.getImageCaptcha();
             }
           }
         }
@@ -206,8 +203,13 @@ export class UserLoginComponent implements OnInit, OnDestroy {
   // #region get captcha
   getImageCaptcha(): void {
     this.imageCaptchaService.captcha({ state: this.state, captcha: this.captchaType }).subscribe(res => {
-      this.imageCaptcha = res.data.image;
-      this.cdr.detectChanges();
+      if (res.code == 0) {
+        this.imageCaptcha = res.data.image;
+        this.cdr.detectChanges();
+      } else {
+        //令牌失效时，重新刷新页面
+        window.location.reload();
+      }
     });
   }
 
@@ -309,32 +311,50 @@ export class UserLoginComponent implements OnInit, OnDestroy {
   /**
    * 获取二维码
    */
-  getLoginQrCode() {
-    this.qrexpire = false;
-
-    this.qrCodeService.getLoginQrCode().subscribe(res => {
-      if (res.code === 0 && res.data.rqCode) {
-        // 使用返回的 rqCode
-        const qrImageElement = document.getElementById('div_qrcodelogin');
-        this.ticket = res.data.ticket;
-        if (qrImageElement) {
-          qrImageElement.innerHTML = `<img src="${res.data.rqCode}" alt="QR Code" style="width: 200px; height: 200px;">`;
+  getScanQrCode() {
+    this.authnService.clearUser();
+    console.log(`qrScan : ${this.socials.qrScan}`);
+    if (this.socials.qrScan === 'workweixin' || this.socials.qrScan === 'dingtalk' || this.socials.qrScan === 'feishu') {
+      this.socialsProviderService.scanqrcode(this.socials.qrScan).subscribe(res => {
+        if (res.code === 0) {
+          if (this.socials.qrScan === 'workweixin') {
+            this.qrScanWorkweixin(res.data);
+          } else if (this.socials.qrScan === 'dingtalk') {
+            this.qrScanDingtalk(res.data);
+          } else if (this.socials.qrScan === 'feishu') {
+            this.qrScanFeishu(res.data);
+          }
         }
+      });
+    } else {
+      this.qrexpire = false;
+      if (this.interval$) {
+        clearInterval(this.interval$);
+      }
+      this.qrCodeService.getLoginQrCode().subscribe(res => {
+        if (res.code === 0 && res.data.rqCode) {
+          // 使用返回的 rqCode
+          const qrImageElement = document.getElementById('div_qrcodelogin');
+          this.ticket = res.data.ticket;
+          if (qrImageElement) {
+            qrImageElement.innerHTML = `<img src="${res.data.rqCode}" alt="QR Code" style="width: 200px; height: 200px;">`;
+          }
 
-        /*   // 设置5分钟后 qrexpire 为 false
+          /*   // 设置5分钟后 qrexpire 为 false
         setTimeout(() => {
           this.qrexpire = true;
           this.cdr.detectChanges(); // 更新视图
         }, 5 * 60 * 1000); // 5 分钟*/
-        this.loginByQrCode();
-      }
-    });
+          this.scanQrCodeLogin();
+        }
+      });
+    }
   }
 
   /**
    * 二维码轮询登录
    */
-  loginByQrCode() {
+  scanQrCodeLogin() {
     const interval = setInterval(() => {
       this.qrCodeService
         .loginByQrCode({
@@ -367,27 +387,6 @@ export class UserLoginComponent implements OnInit, OnDestroy {
           this.cdr.detectChanges(); // 更新视图
         });
     }, 5 * 1000); // 5 seconds
-  }
-
-  getQrCode(): void {
-    this.qrexpire = false;
-    if (this.interval$) {
-      clearInterval(this.interval$);
-    }
-    this.authnService.clearUser();
-    this.socialsProviderService.scanqrcode(this.socials.qrScan).subscribe(res => {
-      if (res.code === 0) {
-        if (this.socials.qrScan === 'workweixin') {
-          this.qrScanWorkweixin(res.data);
-        } else if (this.socials.qrScan === 'dingtalk') {
-          this.qrScanDingtalk(res.data);
-        } else if (this.socials.qrScan === 'maxkey') {
-          this.qrScanMaxkey(res.data);
-        } else if (this.socials.qrScan === 'feishu') {
-          this.qrScanFeishu(res.data);
-        }
-      }
-    });
   }
 
   // #endregion

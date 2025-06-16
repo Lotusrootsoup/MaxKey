@@ -65,6 +65,8 @@ public class ImageCaptchaEndpoint {
             String kaptchaText = captchaProducer.createText();
             String kaptchaValue = kaptchaText;
             if (captchaType.equalsIgnoreCase("Arithmetic")) {
+            	//去除0，增加计算复杂度
+            	kaptchaText = kaptchaText.replace("0", "");
                 Integer minuend = Integer.valueOf(kaptchaText.substring(0, 1));
                 Integer subtrahend = Integer.valueOf(kaptchaText.substring(1, 2));
                 if (minuend - subtrahend > 0) {
@@ -76,10 +78,11 @@ public class ImageCaptchaEndpoint {
                 }
             }
             String kaptchaKey = "";
-            if(StringUtils.isNotBlank(state) 
-            		&& !state.equalsIgnoreCase("state")
-            		&& authTokenService.validateJwtToken(state)) {
+            if(StringUtils.isNotBlank(state) && !state.equalsIgnoreCase("state")) {
             	//just validate state Token
+            	if(!authTokenService.validateJwtToken(state)) {
+            		return new Message<>(Message.FAIL,"JwtToken is not Validate  ");
+            	}
             }else {
             	state = authTokenService.genRandomJwt();
             }

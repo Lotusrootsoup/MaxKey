@@ -25,7 +25,7 @@ import java.util.List;
 
 
 import org.dromara.maxkey.configuration.ApplicationConfig;
-import org.dromara.maxkey.persistence.repository.InstitutionsRepository;
+import org.dromara.maxkey.persistence.service.InstitutionsService;
 import org.dromara.maxkey.web.WebInstRequestFilter;
 import org.dromara.maxkey.web.WebXssRequestFilter;
 import org.slf4j.Logger;
@@ -204,9 +204,9 @@ public class MvcAutoConfiguration implements WebMvcConfigurer {
         // https://github.com/springdoc/springdoc-openapi/issues/2143
         // 解决方案
         httpMessageConverterList.add(new ByteArrayHttpMessageConverter());
+        httpMessageConverterList.add(stringHttpMessageConverter);
         httpMessageConverterList.add(mappingJacksonHttpMessageConverter);
         httpMessageConverterList.add(marshallingHttpMessageConverter);
-        httpMessageConverterList.add(stringHttpMessageConverter);
         _logger.debug("stringHttpMessageConverter {}",stringHttpMessageConverter.getDefaultCharset());   
         
         requestMappingHandlerAdapter.setMessageConverters(httpMessageConverterList);
@@ -299,11 +299,11 @@ public class MvcAutoConfiguration implements WebMvcConfigurer {
 
     @Bean
     FilterRegistrationBean<Filter> webInstRequestFilter(
-                                                InstitutionsRepository institutionsRepository,
-                                                ApplicationConfig applicationConfig) {
+    		InstitutionsService institutionsService,
+    		ApplicationConfig applicationConfig) {
         _logger.debug("WebInstRequestFilter init for /* ");
         FilterRegistrationBean<Filter> registrationBean = 
-        		new FilterRegistrationBean<>(new WebInstRequestFilter(institutionsRepository,applicationConfig));
+        		new FilterRegistrationBean<>(new WebInstRequestFilter(institutionsService,applicationConfig));
         registrationBean.addUrlPatterns("/*");
         registrationBean.setName("webInstRequestFilter");
         registrationBean.setOrder(4);

@@ -58,11 +58,11 @@
 			},
 			"audit": {
 				"": "日志审计",
-				"logins": "系统登录日志",
-				"loginapps": "应用访问日志",
+				"logins": "登录日志",
+				"loginapps": "访问日志",
 				"synchronizer": "同步器日志",
 				"connector": "连接器日志",
-				"operate": "系统管理日志"
+				"operate": "系统日志"
 			}
 		},
 		"home": {
@@ -74,9 +74,16 @@
 			"monthAccessCount": "30日访问情况统计",
 			"monthAppCount": "30日TOP10应用访问统计",
 			"monthBrowserCount": "30日TOP10浏览器访问统计",
+			"monthProvinceAccessCount": "30日TOP10访问统计",
 			"appName": "应用名称",
 			"browser": "浏览器",
-			"accessCount": "访问量"
+			"accessCount": "访问量",
+			"maptype.china":"中国地图",
+			"maptype.world":"世界地图",
+			"number": "序号",
+			"country": "国家",
+			"province": "省份",
+			"accessPV": "浏览量(PV)"
 		},
 		"users": {
 			"tab.basic": "基本信息",
@@ -173,17 +180,11 @@
 			"userstate.withdrawn": "离职",
 			"userstate.inactive": "停薪留职",
 			"userstate.retiree": "退休",
-			"authnType": "登录方式",
-			"authnType.authnType.1": "普通登录",
-			"authnType.authnType.2": "手机令牌",
-			"authnType.authnType.3": "短信验证",
-			"authnType.authnType.4": "邮件验证",
-			"authnType.authnType.5": "时间令牌",
-			"authnType.authnType.6": "计数器令牌",
-			"authnType.authnType.7": "HOTP令牌",
-			"authnType.authnType.8": "RSA令牌",
-			"authnType.authnType.9": "数字证书",
-			"authnType.authnType.10": "USB Key"
+			"authnType": "二次认证",
+			"authnType.0": "无",
+			"authnType.1": "TOTP令牌",
+			"authnType.2": "邮件验证码",
+			"authnType.3": "短信验证码"
 		},
 		"organizations": {
 			"tab.basic": "基本信息",

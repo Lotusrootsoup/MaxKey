@@ -15,20 +15,27 @@
         <img src="https://img.shields.io/badge/JDK-v17%2B-brightgreen" />
     </a>
     <a target="_blank" href="https://www.mysql.com/">
-        <img src="https://img.shields.io/badge/MySQL-8.0.12%2B-brightgreen" />
+        <img src="https://img.shields.io/badge/MySQL-8.4.2%2B-brightgreen" />
     </a>
     <a target="_blank" href="http://www.maxkey.top/zh/about/licenses.html">
         <img src="https://img.shields.io/github/license/dromara/MaxKey" />
+    </a>
+	<a target="_blank" href="https://www.bt.cn/u/AjsXmi">
+        <img src="https://img.shields.io/badge/BT_Deploy-Install-20a53a" />
     </a>
 </p>
 
 # Overview
 
-<b>Maxkey </b> Single Sign On System, which means the Maximum key, <b>Leading-Edge IAM/IDaas Identity and Access Management Product </b>, Support OAuth 2.x/OpenID Connect, SAML 2.0, JWT, CAS, SCIM and other standard protocols, and provide <b> Secure , Standard and Open </b> Identity management (IDM), Access management (AM), Single Sign On (SSO), RBAC permission management and Resource management.
+Dromara <b>Maxkey </b> Single Sign On System is <b>Leading-Edge IAM/IDaas Identity and Access Management Product </b>.
+Its homophonic name is Marx's key, which means that it can unlock complex enterprise security needs like a master key (maximum key) and provide a simple and efficient solution. 
+The product Support OAuth 2.x/OpenID Connect, SAML 2.0, JWT, CAS, SCIM and other standard protocols, and provide <b> Secure , Standard and Open </b> Identity management (IDM), Access management (AM), Single Sign On (SSO), RBAC permission management and Resource management.
 
 MaxKey focuses on performance, security, and ease of use in enterprise scenarios, is widely used in industries such as healthcare, finance, government, and manufacturing.
 
-Official Website <a href="http://www.maxkey.top/" target="_blank"><b>http://www.maxkey.top/</b></a>
+MaxKey under <b>Apache License, Version 2.0 is free</b> . Open Source, Secure, Compliance, Independent and Controllable . 
+
+Official Website <a href="https://www.maxkey.top/" target="_blank"><b>https://www.maxkey.top/</b></a>
 
 WeChat: 
 
@@ -37,6 +44,11 @@ WeChat:
 QQ: <b> 1054466084 </b> 
 
 email: <b> support@maxsso.net </b>
+
+Online Demo  <a href="https://maxkey.top/zh/about/demo.html" target="_blank"><b>Access Online Demo</b></a> 
+
+Issue guide <a href="https://gitee.com/dromara/MaxKey/issues?q=is%3Aclosed">Closed List</a>  | <a href="https://gitee.com/dromara/MaxKey/issues/I65IEQ">New Issue</a>
+
 
 Code Hosting <a href="https://github.com/dromara/MaxKey" target="_blank"><b>GitHub</b></a> | <a href="https://gitee.com/dromara/MaxKey" target="_blank"><b>Gitee</b></a>  | <a href="https://gitcode.com/dromara/MaxKey/overview" target="_blank"><b>GitCode</b></a>
 
@@ -62,6 +74,7 @@ Code Hosting <a href="https://github.com/dromara/MaxKey" target="_blank"><b>GitH
 | 1.7     | TokenBased(Post/Cookie)     	| MIDDLE|
 | 1.8     | ExtendApi                   	| LOW   |
 | 1.9     | EXT                         	| LOW   |
+
 
 2. Authentication
 
@@ -120,15 +133,18 @@ App Management UI
 
 | Version    | Date   |   Download URL  |
 | --------   | :----- | :----           | 
-| v 4.1.2   | 2024/09/30   | <a href="https://www.maxkey.top/zh/about/download.html"  target="_blank">Download</a> |
+| v 4.1.7   | 2024/04/01   | <a href="https://www.maxkey.top/zh/about/download.html"  target="_blank">Download</a> |
+
 
 # Install
 
 |  OS       | Manual    | 
 | --------      | :-----  |
-| Windows  | <a href="http://maxkey.top/zh/conf/tutorial.html?#windows"  target="_blank">Document</a>  |
-| Linux    | <a href="http://maxkey.top/zh/conf/tutorial.html?#linux"  target="_blank">Document</a>  |
-| Docker   | <a href="http://maxkey.top/zh/conf/deploy_docker.html"  target="_blank">Document</a>  |
+| Windows  | <a href="https://www.maxkey.top/zh/about/download.html"  target="_blank">Document</a>  |
+| Linux    | <a href="https://www.maxkey.top/zh/about/download.html"  target="_blank">Document</a>  |
+| Docker   | <a href="https://www.maxkey.top/zh/about/download.html"  target="_blank">Document</a>  |
+| 宝塔     | <a href="https://www.maxkey.top/zh/about/download.html"  target="_blank">Document</a>  |
+
 
 # License
  
@@ -165,155 +181,175 @@ App Management UI
 
 以下为部分接入或测试中的用户
 
-| 单位    |
-| :-----  |
-| 中国人民警察大学                            |
-| 福耀科技大学                                |
-| 兰州现代职业学院                            |
-| 长春职业技术学院                            |
-| 云南师范大学                                |
-| 云南农业职业技术学院                        |
-| 惠州卫生职业技术学院                        |
-| 厦门软件职业技术学院                        |
-| 宜昌市三峡中等专业学校                      |
-| 上海图书馆                                  |
-| 重庆市北碚图书馆                            |
-| 天津市劳动保障技师学院                      |
-| 南京财经高等职业技术学校                    |
-| 泸州市教育和体育局                          |
-| 余姚市教育局                                |
-| 中国金融认证中心                            |
-| 国家高端智能化家用电器创新中心              |
-| 国家中小企业数字化转型促进中心              |
-| 国元证券                                    |
-| 华夏金融租赁有限公司                        |
-| 国宝人寿保险股份有限公司                    |
-| 瀚华金控股份有限公司                        |
-| 紫金财产保险股份有限公司                    |
-| 路特斯中国                                  |
-| 奇瑞汽车股份有限公司                        |
-| 宇通客车股份有限公司                        |
-| 国家能源局                                  |
-| 国务院港澳事务办公室                        |
-| 百度智能云身份管理服务                      |
-| 360公司                                     |
-| 三一华兴                                    |
-| 云小厨CloudKitchens                         |
-| 西藏阜康医院                                |
-| 海阳市人民医院                              |
-| 上海逸广信息科技有限公司                    |
-| 联鹏应用软件（上海）有限公司                |
-| 上海万序健康科技有限公司                    |
-| 上海中商网络股份有限公司                    |
-| 上海半天妖餐饮管理有限公司                  |
-| 上海杨国福企业管理（集团）有限公司          |
-| 上海契胜科技有限公司                        |
-| 纯米科技（上海）股份有限公司                |
-| 中腾信金融信息服务(上海)有限公司            |
-| GAP盖璞（上海）商业有限公司                 |
-| 汤臣倍健股份有限公司                        |
-| 跳羚科技(厦门)有限公司                      |
-| 飞天诚信科技股份有限公司                    |
-| 浪潮工业互联网股份有限公司                  |
-| 唐颐控股有限公司                            |
-| 中创智维科技有限公司                        |
-| 中航金网（北京）电子商务有限公司            |
-| 中国航空制造技术研究院                      |
-| 中建国际投资集团有限公司                    |
-| 同方节能工程技术有限公司                    |
-| 云南航天工程物探检测股份有限公司            |
-| 山东港口陆海国际物流集团有限公司            |
-| 山东埃德森石油工程技术有限公司              |
-| 山东第一医科大学第一附属医院                |
-| 广州无线电集团                              |
-| 广东小天才科技有限公司                      |
-| 广州携旅信息科技有限公司                    |
-| 广州蓝深科技有限公司                        |
-| 广州广汽商贸物流有限公司                    |
-| 广州思迈特软件有限公司                      |
-| 广州新一代人工智能产业园管理有限公司        |
-| 广东鸿正软件技术有限公司                    |
-| 广东汇天航空航天科技有限公司                |
-| 广东漫云物联科技有限公司                    |
-| 深圳市金溢科技股份有限公司                  |
-| 深圳市中悦科技有限公司                      |
-| 深圳能源集团股份有限公司                    |
-| 深圳市东阳光实业发展有限公司                |
-| 深圳云天励飞技术股份有限公司                |
-| 深圳市维玛科技有限公司                      |
-| 深圳市观塘银河电讯科技有限公司              |
-| 金龙机电股份有限公司                        |
-| 佛山众陶联供应链服务有限公司                |
-| 河南新辰环保科技有限公司                    |
-| 河南豫光金铅股份有限公司                    |
-| 黄河科技集团有限公司                        |
-| 豫信电子科技集团有限公司                    |
-| 双汇物流投资有限公司                        |
-| 北京外交人员服务局                          |
-| 北京博亚思科技有限公司                      |
-| 北京银泰置业有限公司                        |
-| 北京和融通支付科技有限公司                  |
-| 北京微通新成网络科技有限公司                |
-| 北京柏橡科技有限公司                        |
-| Best Lawyers Corporation(佳律)              |
-| 浙江领湾网络有限公司                        |
-| 浙江申跃信息科技有限公司                    |
-| 浙江一舟电子科技股份有限公司                |
-| 浙江正元智慧科技有限公司                    |
-| 浙江宇视科技有限公司                        |
-| 杭州市能源集团有限公司                      | 
-| 杭州润为数据科技有限公司                    |
-| 杭州马上自动化科技有限公司                  |
-| 景德镇黑猫集团有限责任公司                  |
-| 得力集实有限公司                            |
-| 海力控股集团有限公司                        |
-| 之江实验室                                  |
-| 丽水市中医医院                              |
-| 宁波金融资产交易中心                        |
-| 德清智慧教育平台                            |
-| 江苏创致信息科技有限公司                    |
-| 无锡市陶都巨龙软件有限责任公司              |
-| 苏州二叶制药有限公司                        |
-| 武汉良之隆食材股份有限公司                  |
-| 民生实业（集团）有限公司                    |
-| TCL华星光电技术有限公司                     |
-| 万宝盛华集团                                |
-| 妙盈科技                                    |
-| 尚企云链                                    |
-| 华奕四库                                    |
-| 海力控股集团                                |
-| 中国融通教育集团                            |
-| 新疆天衡信息系统咨询管理有限公司            |
-| 新开普电子股份有限公司                      |
-| 广西数字浪潮数据服务有限公司                |
-| 百安居中国                                  |
-| 重庆两江协同创新区                          |
-| 重庆征信有限责任公司                        |
-| 万宝盛华大中华有限公司                      |
-| 哈尔滨途图科技有限公司                      |
-| 哈尔滨逐浪文化传媒有限公司                  |
-| 大连电瓷集团股份有限公司                    |
-| 锦州港股份有限公司                          |
-| 古汉中药有限公司                            |
-| 湖南数通信息技术服务有限公司                |
-| 湖南湘邮科技股份有限公司                    |
-| 湖南省公共资源交易平台市场主体注册系统      |
-| 湘潭智慧教育云统一认证平台                  |
-| 南京市智慧医疗投资运营服务有限公司          |
-| 南京领行科技股份有限公司                    |
-| 南凌科技股份有限公司                        |
-| 福建引迈信息技术有限公司                    |
-| 漳州信息产业集团有限公司                    |
-| 厦门茂商科技有限公司                        |
-| 惠州中京电子科技股份有限公司                |
-| 武汉英特沃科技有限公司                      |
-| 武汉博特睿达智能科技有限公司                |
-| 江西云车科技有限公司                        |
-| 天津汉通教育科技有限公司                    |
-| 天津市达恩华天智能科技有限公司              |
-| 企思（天津）科技有限公司                    |
-| 凯盛工业互联网平台                          |
-| 吕梁市医改监测平台                          |
-| 遂宁市经济大数据平台                        |
-| 临沂市城市大脑物联网统一认证平台            |
-| 广州佳医科科技                              |
+| No.       | 单位    | 
+| --------      | :-----  |
+| 1 | 中国人民警察大学                            |
+| 2 | 福耀科技大学                                |
+| 3 | 兰州现代职业学院                            |
+| 4 | 长春职业技术学院                            |
+| 5 | 云南师范大学                                |
+| 6 | 云南农业职业技术学院                        |
+| 7 | 惠州卫生职业技术学院                        |
+| 8 | 厦门软件职业技术学院                        |
+| 9 | 宜昌市三峡中等专业学校                      |
+| 10 | 上海图书馆                                  |
+| 11 | 重庆市北碚图书馆                            |
+| 12 | 天津市劳动保障技师学院                      |
+| 13 | 南京财经高等职业技术学校                    |
+| 14 | 泸州市教育和体育局                          |
+| 15 | 余姚市教育局                                |
+| 16 | 河南地矿职业学院                            |
+| 17 | 西昌医学高等专科学校                        |
+| 18 | 福建卫生职业技术学院                        |
+| 19 | 国家高端智能化家用电器创新中心              |
+| 20 | 华夏金融租赁有限公司                        |
+| 21 | 国宝人寿保险股份有限公司                    |
+| 22 | 国元证券                                    |
+| 23 | 紫金财产保险股份有限公司                    |
+| 24 | 路特斯中国                                  |
+| 25 | 奇瑞汽车股份有限公司                        |
+| 26 | 宇通客车股份有限公司                        |
+| 27 | 国家能源局                                  |
+| 28 | 国务院港澳事务办公室                        |
+| 29 | 百度智能云身份管理服务                      |
+| 30 | 360公司                                     |
+| 31 | 三一华兴                                    |
+| 32 | 中国金融认证中心                            |
+| 33 | 西藏阜康医院                                |
+| 34 | 海阳市人民医院                              |
+| 35 | 国家中小企业数字化转型促进中心              |
+| 36 | 联鹏应用软件（上海）有限公司                |
+| 37 | 上海万序健康科技有限公司                    |
+| 38 | 上海中商网络股份有限公司                    |
+| 39 | 上海半天妖餐饮管理有限公司                  |
+| 40 | 上海杨国福企业管理（集团）有限公司          |
+| 41 | 上海契胜科技有限公司                        |
+| 42 | 纯米科技（上海）股份有限公司                |
+| 43 | 中腾信金融信息服务(上海)有限公司            |
+| 44 | GAP盖璞（上海）商业有限公司                 |
+| 45 | 汤臣倍健股份有限公司                        |
+| 46 | 跳羚科技(厦门)有限公司                      |
+| 47 | 飞天诚信科技股份有限公司                    |
+| 48 | 浪潮工业互联网股份有限公司                  |
+| 49 | 唐颐控股有限公司                            |
+| 50 | 中创智维科技有限公司                        |
+| 51 | 中航金网（北京）电子商务有限公司            |
+| 52 | 中国航空制造技术研究院                      |
+| 53 | 中建国际投资集团有限公司                    |
+| 54 | 同方节能工程技术有限公司                    |
+| 55 | 云南航天工程物探检测股份有限公司            |
+| 56 | 山东港口陆海国际物流集团有限公司            |
+| 57 | 山东埃德森石油工程技术有限公司              |
+| 58 | 山东第一医科大学第一附属医院                |
+| 59 | 广州无线电集团                              |
+| 60 | 广东小天才科技有限公司                      |
+| 61 | 广州携旅信息科技有限公司                    |
+| 62 | 广州蓝深科技有限公司                        |
+| 63 | 广州广汽商贸物流有限公司                    |
+| 64 | 广州思迈特软件有限公司                      |
+| 65 | 广州新一代人工智能产业园管理有限公司        |
+| 66 | 广东鸿正软件技术有限公司                    |
+| 67 | 广东汇天航空航天科技有限公司                |
+| 68 | 广东漫云物联科技有限公司                    |
+| 69 | 深圳市金溢科技股份有限公司                  |
+| 70 | 深圳市中悦科技有限公司                      |
+| 71 | 深圳能源集团股份有限公司                    |
+| 72 | 深圳市东阳光实业发展有限公司                |
+| 73 | 深圳云天励飞技术股份有限公司                |
+| 74 | 深圳市维玛科技有限公司                      |
+| 75 | 深圳市观塘银河电讯科技有限公司              |
+| 76 | 金龙机电股份有限公司                        |
+| 77 | 佛山众陶联供应链服务有限公司                |
+| 78 | 河南新辰环保科技有限公司                    |
+| 79 | 河南豫光金铅股份有限公司                    |
+| 80 | 黄河科技集团有限公司                        |
+| 81 | 豫信电子科技集团有限公司                    |
+| 82 | 双汇物流投资有限公司                        |
+| 83 | 北京外交人员服务局                          |
+| 84 | 北京博亚思科技有限公司                      |
+| 85 | 北京银泰置业有限公司                        |
+| 86 | 北京和融通支付科技有限公司                  |
+| 87 | 北京微通新成网络科技有限公司                |
+| 88 | 北京柏橡科技有限公司                        |
+| 89 | Best Lawyers Corporation(佳律)              |
+| 90 | 浙江领湾网络有限公司                        |
+| 91 | 浙江申跃信息科技有限公司                    |
+| 92 | 浙江一舟电子科技股份有限公司                |
+| 93 | 浙江正元智慧科技有限公司                    |
+| 94 | 浙江宇视科技有限公司                        |
+| 95 | 杭州市能源集团有限公司                      | 
+| 96 | 杭州润为数据科技有限公司                    |
+| 97 | 杭州马上自动化科技有限公司                  |
+| 98 | 景德镇黑猫集团有限责任公司                  |
+| 99 | 得力集实有限公司                            |
+| 100 | 海力控股集团有限公司                        |
+| 101 | 之江实验室                                  |
+| 102 | 丽水市中医医院                              |
+| 103 | 宁波金融资产交易中心                        |
+| 104 | 德清智慧教育平台                            |
+| 105 | 江苏创致信息科技有限公司                    |
+| 106 | 无锡市陶都巨龙软件有限责任公司              |
+| 107 | 苏州二叶制药有限公司                        |
+| 108 | 武汉良之隆食材股份有限公司                  |
+| 109 | 民生实业（集团）有限公司                    |
+| 110 | TCL华星光电技术有限公司                     |
+| 111 | 万宝盛华集团                                |
+| 112 | 妙盈科技                                    |
+| 113 | 尚企云链                                    |
+| 114 | 华奕四库                                    |
+| 115 | 海力控股集团                                |
+| 116 | 中国融通教育集团                            |
+| 117 | 新疆天衡信息系统咨询管理有限公司            |
+| 118 | 新开普电子股份有限公司                      |
+| 119 | 广西数字浪潮数据服务有限公司                |
+| 120 | 百安居中国                                  |
+| 121 | 重庆两江协同创新区                          |
+| 122 | 重庆征信有限责任公司                        |
+| 123 | 万宝盛华大中华有限公司                      |
+| 124 | 哈尔滨途图科技有限公司                      |
+| 125 | 哈尔滨逐浪文化传媒有限公司                  |
+| 126 | 大连电瓷集团股份有限公司                    |
+| 127 | 锦州港股份有限公司                          |
+| 128 | 古汉中药有限公司                            |
+| 129 | 湖南数通信息技术服务有限公司                |
+| 130 | 湖南湘邮科技股份有限公司                    |
+| 131 | 湖南省公共资源交易平台市场主体注册系统      |
+| 132 | 湘潭智慧教育云统一认证平台                  |
+| 133 | 南京市智慧医疗投资运营服务有限公司          |
+| 134 | 南京领行科技股份有限公司                    |
+| 135 | 南凌科技股份有限公司                        |
+| 136 | 福建引迈信息技术有限公司                    |
+| 137 | 漳州信息产业集团有限公司                    |
+| 138 | 厦门茂商科技有限公司                        |
+| 139 | 惠州中京电子科技股份有限公司                |
+| 140 | 武汉英特沃科技有限公司                      |
+| 141 | 武汉博特睿达智能科技有限公司                |
+| 142 | 江西云车科技有限公司                        |
+| 143 | 天津汉通教育科技有限公司                    |
+| 144 | 天津市达恩华天智能科技有限公司              |
+| 145 | 企思（天津）科技有限公司                    |
+| 146 | 凯盛工业互联网平台                          |
+| 147 | 吕梁市医改监测平台                          |
+| 148 | 遂宁市经济大数据平台                        |
+| 149 | 临沂市城市大脑物联网统一认证平台            |
+| 150 | 广州佳医科科技                              |
+| 151 | 中科华通科技有限公司                        |
+| 152 | 浙江迈德斯特医疗器械科技有限公司            |
+| 153 | 瀚华金控股份有限公司                        |
+| 154 | 中国职工保险互助会                          |
+| 155 | 泸溪河食品（集团）有限公司                  |
+| 156 | 上海逸广信息科技有限公司                    |
+| 157 | 江西钨业控股集团有限公司                    |
+| 158 | 博雷顿科技股份公司                          |
+| 159 | 庞加莱(北京)能源科技有限责任公司            |
+| 160 | 广州市建筑科学研究院集团有限公司            |
+| 161 | 和祐国际医院集团                            |
+| 162 | 秦皇岛市妇幼保健院                          |
+| 163 | 云钉（厦门）科技有限公司                    |
+| 164 | 青数集团                                    |
+| 165 | 鲁商集团                                    |
+| 166 | 鹏驰五金制品有限公司                        |
+| 167 | 云小厨CloudKitchens                         |
+| 168 | 深圳民生捷富凯物流有限公司                  |
+| 169 | 武汉璞华大数据技术有限公司                  |
+

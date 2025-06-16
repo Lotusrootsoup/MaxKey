@@ -34,9 +34,11 @@ public interface SessionManager {
 
     public Session refresh(String sessionId);
 
-    public List<HistoryLogin> querySessions();
+    public List<HistoryLogin> querySessions(Integer category);
 
     public int getValiditySeconds();
 
     public void terminate(String sessionId,String userId,String username);
+    
+    public void visited(String sessionId , VisitedDto visited);
 }
