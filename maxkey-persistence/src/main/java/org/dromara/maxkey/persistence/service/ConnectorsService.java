@@ -18,8 +18,8 @@
 package org.dromara.maxkey.persistence.service;
 
 import org.dromara.maxkey.entity.Connectors;
-import org.dromara.mybatis.jpa.IJpaService;
+import org.dromara.mybatis.jpa.service.IJpaService;
 
-public interface ConnectorsService  extends IJpaService<Connectors>{
+public interface ConnectorsService  extends IJpaService<Connectors,String>{
  
 }

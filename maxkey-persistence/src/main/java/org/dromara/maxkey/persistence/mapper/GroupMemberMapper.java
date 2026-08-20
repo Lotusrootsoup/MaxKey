@@ -32,21 +32,21 @@ import org.dromara.mybatis.jpa.IJpaMapper;
  *
  */
 
-public  interface GroupMemberMapper extends IJpaMapper<GroupMember> {
-	
-	public List<GroupMember> memberIn(GroupMember entity);
-	public List<GroupMember> memberNotIn(GroupMember entity);
-	
-	public List<Groups> noMember(GroupMember entity);
-	
-	public int addDynamicMember(Groups dynamicRole);
-	
-	public int deleteDynamicMember(Groups dynamicRole);
-	
-	public int deleteByGroupId(String groupId);
-	
-	public List<UserInfo> queryMemberByGroupId(String groupId);
-	
-	
-	
+public  interface GroupMemberMapper extends IJpaMapper<GroupMember,String> {
+    
+    public List<GroupMember> memberIn(GroupMember entity);
+    public List<GroupMember> memberNotIn(GroupMember entity);
+    
+    public List<Groups> noMember(GroupMember entity);
+    
+    public int addDynamicMember(Groups dynamicRole);
+    
+    public int deleteDynamicMember(Groups dynamicRole);
+    
+    public int deleteByGroupId(String groupId);
+    
+    public List<UserInfo> queryMemberByGroupId(String groupId);
+    
+    
+    
 }

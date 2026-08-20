@@ -5,31 +5,26 @@
   <strong>Leading-Edge IAM/IDaas Identity and Access Management Product</strong>
 </p>     
 <p align="center" >
-<a href="README_en.md" target="_blank"><b>English</b></a>  |  <a href="README_zh.md" target="_blank"><b>中文</b></a>
+<a href="README.md" target="_blank"><b>English</b></a>  |  <a href="README_zh.md" target="_blank"><b>中文</b></a>
 </p>     
 <p align="center">
     <a target="_blank" href="http://www.maxkey.top/zh/about/download.html">
-        <img src="https://img.shields.io/github/v/release/dromara/MaxKey" />
+        <img src="https://img.shields.io/github/v/release/dromara/MaxKey?style=for-the-badge" />
     </a>
     <a target="_blank" href="https://www.oracle.com/java/technologies/downloads/">
-        <img src="https://img.shields.io/badge/JDK-v17%2B-brightgreen" />
+        <img src="https://img.shields.io/badge/JDK-v21%2B-brightgreen?style=for-the-badge" />
     </a>
     <a target="_blank" href="https://www.mysql.com/">
-        <img src="https://img.shields.io/badge/MySQL-8.4.2%2B-brightgreen" />
+        <img src="https://img.shields.io/badge/MySQL-8.4%2B-brightgreen?style=for-the-badge" />
     </a>
     <a target="_blank" href="http://www.maxkey.top/zh/about/licenses.html">
-        <img src="https://img.shields.io/github/license/dromara/MaxKey" />
-    </a>
-	<a target="_blank" href="https://www.bt.cn/u/AjsXmi">
-        <img src="https://img.shields.io/badge/BT_Deploy-Install-20a53a" />
+        <img src="https://img.shields.io/github/license/dromara/MaxKey?style=for-the-badge" />
     </a>
 </p>
 
 # Overview
 
-Dromara <b>Maxkey </b> Single Sign On System is <b>Leading-Edge IAM/IDaas Identity and Access Management Product </b>.
-Its homophonic name is Marx's key, which means that it can unlock complex enterprise security needs like a master key (maximum key) and provide a simple and efficient solution. 
-The product Support OAuth 2.x/OpenID Connect, SAML 2.0, JWT, CAS, SCIM and other standard protocols, and provide <b> Secure , Standard and Open </b> Identity management (IDM), Access management (AM), Single Sign On (SSO), RBAC permission management and Resource management.
+Dromara <b>MaxKey</b> Single Sign-On System is <b>a leading-edge IAM/IDaaS (Identity and Access Management) Product</b>. Its name is a homophone of "Marx's key," symbolizing how it unlocks complex enterprise security needs like a master key while providing simple and efficient solutions. The product supports OAuth 2.x/OpenID Connect, SAML 2.0, JWT, CAS, SCIM and other standard protocols, and provides <b> Secure , Standard and Open </b> Identity Management (IDM), Access Management (AM), Single Sign-On (SSO), RBAC permission management and Resource Management.
 
 MaxKey focuses on performance, security, and ease of use in enterprise scenarios, is widely used in industries such as healthcare, finance, government, and manufacturing.
 
@@ -87,6 +82,7 @@ Code Hosting <a href="https://github.com/dromara/MaxKey" target="_blank"><b>GitH
 | 2.6     | LDAP            | OpenLDAP/ActiveDirectory/Standard LDAP Server |
 | 2.7     | Social Account  | WeChat/QQ/ Weibo/DingTalk/Google/Facebook/other  | 
 | 2.8     | Scan QR Code    | WorkWeiXin/DingTalk/FeiShu Scan QR Code | 
+| 2.9     | No Password     | WebAuthn FIDO2/passkey  | 
 
 
 3. Standard Authentication Protocols for applications to integrate sso, secure mobile access, secure API, third-party authentication and Internet authentication.
@@ -101,7 +97,7 @@ Code Hosting <a href="https://github.com/dromara/MaxKey" target="_blank"><b>GitH
 
 8. Configured password and access policies; Supports precise IP positioning in Ip2region or GeoLite2 geographic databases, powerful security auditing, full lifecycle audit of users, traceability audit of access behavior records, security compliance audit, and security risk warning.
 
-9. Based on Java EE platform , microservice architecture, Use Spring, MySQL, Tomcat, Redis , MQ and other open source technologies, and has strong scalability.
+9. Based on Java EE platform , microservice architecture, Use Spring, MySQL, Tomcat, Redis and other open source technologies, and has strong scalability.
 
 10. Open Source, Secure, Compliance, Independent and Controllable . 
 
@@ -132,7 +128,7 @@ App Management UI
 
 | Version    | Date   |  Download URL  |
 | --------   | :----- | :----           | 
-| v 4.1.7   | 2024/04/01   | <a href="https://www.maxkey.top/zh/about/download.html"  target="_blank">Download</a> |
+| v 4.1.12   | 2026/06/30   | <a href="https://www.maxkey.top/zh/about/download.html"  target="_blank">Download</a> |
 
 
 # Install
@@ -142,7 +138,7 @@ App Management UI
 | Windows  | <a href="https://www.maxkey.top/zh/about/download.html"  target="_blank">Document</a>  |
 | Linux    | <a href="https://www.maxkey.top/zh/about/download.html"  target="_blank">Document</a>  |
 | Docker   | <a href="https://www.maxkey.top/zh/about/download.html"  target="_blank">Document</a>  |
-| 宝塔     | <a href="https://www.maxkey.top/zh/about/download.html"  target="_blank">Document</a>  |
+| 宝塔 <a target="_blank" href="https://www.bt.cn/u/AjsXmi"> <img src="https://img.shields.io/badge/BT-Install-20a53a" /></a> | <a href="https://www.maxkey.top/zh/about/download.html"  target="_blank">Document</a>  |
 
 
 # License
@@ -352,4 +348,40 @@ App Management UI
 | 167 | 云小厨CloudKitchens                         |
 | 168 | 深圳民生捷富凯物流有限公司                  |
 | 169 | 武汉璞华大数据技术有限公司                  |
+| 170 | 郑州数智技术研究院有限公司                   |
+| 171 | 石家庄财经职业学院                  |
+| 172 | 深圳市博科供应链管理有限公司                  |
+| 173 | 北京市第三十五中学                  |
+| 174 | 郑州市电子信息工程学校                  |
+| 175 | 中国金谷国际信托公司                  |
+| 176 | 金龙机电股份有限公司                  |
+| 177 | Skyline Exhibits                  |
+| 178 | 贵州贵安发展集团有限公司                  |
+| 179 | 河南地矿职业学院                  |
+| 180 | 天津轻工职业技术学院                  |
+| 181 | 乌海职业技术学院                  |
+| 182 | 河北建筑工程学院                  |
+| 183 | 炎黄职业技术学院                  |
+| 184 | 赤峰信息职业技术学校                  |
+| 185 | 江苏金旺智能科技有限公司                  |
+| 186 | 丰田智能电动汽车研发中心(中国)有限公司  |
+| 187 | 科学城（广州）投资集团有限公司                  |
+| 188 | 索菲亚家居股份有限公司                  |
+| 189 | 旭日信息科技（惠州）有限公司                  |
+| 190 | 东方希望集团                  |
+| 191 | 深圳市天一泓科技有限公司                  |
+| 192 | 莱克电气股份有限公司                  |
+| 193 | 陕西媒体融合统一平台                  |
+| 194 | 金易化工数字化智能管理平台                  |
+| 195 | 日照职业技术大学                  |
+| 196 | 高济健康/瓴创（北京）科技有限公司                  |
+| 197 | 甘肃供安宝科技有限公司                  |
+| 198 | 洞察时空（成都）科技有限公司                  |
+| 199 | 海南大学三亚研究院                  |
+| 200 | 特步集团                  |
+| 201 | New Balance / 新百伦贸易（中国）有限公司                 |
+| 202 | 广州潮洋服饰科技有限公司                  |
+| 203 | 江苏吴中集团有限公司                  |
+| 204 | 哈尔滨体育学院                  |
+| 205 | 上海胡桃网络科技有限公司                  |
 

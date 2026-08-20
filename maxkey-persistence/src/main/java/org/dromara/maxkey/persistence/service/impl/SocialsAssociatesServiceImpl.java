@@ -28,10 +28,11 @@ import org.springframework.stereotype.Repository;
 
 
 @Repository
-public class SocialsAssociatesServiceImpl  extends JpaServiceImpl<SocialsAssociateMapper,SocialsAssociate> implements SocialsAssociatesService{
+public class SocialsAssociatesServiceImpl  extends JpaServiceImpl<SocialsAssociateMapper,SocialsAssociate,String> implements SocialsAssociatesService{
 
-	public List<SocialsAssociate>  queryByUser(UserInfo user) {
-		return getMapper().queryByUser(user);
-	}
-	 
+    @Override
+    public List<SocialsAssociate>  queryByUser(UserInfo user) {
+        return getMapper().queryByUser(user);
+    }
+     
 }

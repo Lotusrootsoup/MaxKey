@@ -1,9 +1,9 @@
 echo off
 echo set env
 set JAVA_HOME=C:\IDE\jdk-17
-set GRADLE_HOME=C:\ide\gradle-8.8
+set GRADLE_HOME=C:\ide\gradle-9.1.0
 
-set MXK_VERSION=4.1.7
+set MXK_VERSION=4.1.12
 set MXK_REPOSITORY=maxkeytop
 
 call %JAVA_HOME%/bin/java -version

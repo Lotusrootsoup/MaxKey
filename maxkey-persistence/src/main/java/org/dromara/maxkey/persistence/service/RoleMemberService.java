@@ -23,20 +23,20 @@ import java.util.List;
 import org.dromara.maxkey.entity.idm.UserInfo;
 import org.dromara.maxkey.entity.permissions.RoleMember;
 import org.dromara.maxkey.entity.permissions.Roles;
-import org.dromara.mybatis.jpa.IJpaService;
+import org.dromara.mybatis.jpa.service.IJpaService;
 import org.dromara.mybatis.jpa.entity.JpaPageResults;
 
-public interface RoleMemberService  extends IJpaService<RoleMember>{
+public interface RoleMemberService  extends IJpaService<RoleMember,String>{
 
-	public int addDynamicRoleMember(Roles dynamicGroup);
-	
-	public int deleteDynamicRoleMember(Roles dynamicGroup) ;
-	
-	public int deleteByRoleId(String groupId) ;
-	
-	public List<UserInfo> queryMemberByRoleId(String groupId);
-	
-	
-	public JpaPageResults<Roles> rolesNoMember(RoleMember entity) ;
-	
+    public int addDynamicRoleMember(Roles dynamicGroup);
+    
+    public int deleteDynamicRoleMember(Roles dynamicGroup) ;
+    
+    public int deleteByRoleId(String groupId) ;
+    
+    public List<UserInfo> queryMemberByRoleId(String groupId);
+    
+    
+    public JpaPageResults<Roles> rolesNoMember(RoleMember entity) ;
+    
 }

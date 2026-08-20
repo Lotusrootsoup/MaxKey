@@ -34,7 +34,7 @@ public class MaxKeyMgtMvcConfig implements WebMvcConfigurer {
     private static final  Logger logger = LoggerFactory.getLogger(MaxKeyMgtMvcConfig.class);
     
     @Autowired
-  	ApplicationConfig applicationConfig;
+      ApplicationConfig applicationConfig;
     
     @Autowired
     AbstractAuthenticationProvider authenticationProvider ;
@@ -67,6 +67,7 @@ public class MaxKeyMgtMvcConfig implements WebMvcConfigurer {
                 
                 .addPathPatterns("/config/**")
                 .addPathPatterns("/config/**/**")
+                .addPathPatterns("/config/**/**/**")
                 
                 .addPathPatterns("/historys/**")
                 .addPathPatterns("/historys/**/**")

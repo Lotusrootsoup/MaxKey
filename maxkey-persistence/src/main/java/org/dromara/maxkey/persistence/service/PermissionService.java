@@ -20,14 +20,14 @@ package org.dromara.maxkey.persistence.service;
 import java.util.List;
 
 import org.dromara.maxkey.entity.permissions.Permission;
-import org.dromara.mybatis.jpa.IJpaService;
+import org.dromara.mybatis.jpa.service.IJpaService;
 
-public interface PermissionService  extends IJpaService<Permission>{
+public interface PermissionService  extends IJpaService<Permission,String>{
 
-	public boolean insertGroupPrivileges(List<Permission> rolePermissionsList) ;
+    public boolean insertGroupPrivileges(List<Permission> rolePermissionsList) ;
     
-	public boolean deleteGroupPrivileges(List<Permission> rolePermissionsList);
-	
+    public boolean deleteGroupPrivileges(List<Permission> rolePermissionsList);
+    
     public List<Permission> queryGroupPrivileges(Permission rolePermissions);
 
 }

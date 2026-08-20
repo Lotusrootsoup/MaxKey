@@ -5,23 +5,20 @@
   <strong>业界领先的IAM-IDaas身份管理和认证产品</strong>
 </p>  
 <p align="center" >
-<a href="README_en.md" target="_blank"><b>English</b></a>  |  <a href="README_zh.md" target="_blank"><b>中文</b></a>
+<a href="README.md" target="_blank"><b>English</b></a>  |  <a href="README_zh.md" target="_blank"><b>中文</b></a>
 </p>
 <p align="center">
     <a target="_blank" href="http://www.maxkey.top/zh/about/download.html">
-        <img src="https://img.shields.io/github/v/release/dromara/MaxKey" />
+        <img src="https://img.shields.io/github/v/release/dromara/MaxKey?style=for-the-badge" />
     </a>
     <a target="_blank" href="https://www.oracle.com/java/technologies/downloads/">
-        <img src="https://img.shields.io/badge/JDK-v17%2B-brightgreen" />
+        <img src="https://img.shields.io/badge/JDK-v21%2B-brightgreen?style=for-the-badge" />
     </a>
     <a target="_blank" href="https://www.mysql.com/">
-        <img src="https://img.shields.io/badge/MySQL-8.4.2%2B-brightgreen" />
+        <img src="https://img.shields.io/badge/MySQL-8.4%2B-brightgreen?style=for-the-badge" />
     </a>
     <a target="_blank" href="http://www.maxkey.top/zh/about/licenses.html">
-        <img src="https://img.shields.io/github/license/dromara/MaxKey" />
-    </a>
-    <a target="_blank" href="https://www.bt.cn/u/AjsXmi">
-        <img src="https://img.shields.io/badge/BT_Deploy-Install-20a53a" />
+        <img src="https://img.shields.io/github/license/dromara/MaxKey?style=for-the-badge" />
     </a>
     
 </p>
@@ -57,7 +54,11 @@ MaxKey <b>遵循 Apache License, Version 2.0 开源免费</b>，开源、安全�
 >1) 所有应用系统共享一个身份认证系统
 >2) 所有应用系统能够识别和提取ticket信息
  
- 
+# 开源推荐
+- [[ JinBooks财务记账系统 ]](https://gitee.com/jinbooks/jinbooks)： 对标商业财务记账产品，告别Excel手工记账，实现记账无纸化办公
+- [[ CeresCRM客户管理系统 ]](https://gitee.com/jinbooks/cerescrm)： 轻量级CRM客户关系管理产品，聚焦线索、商机、客户、合同、回款
+- [[ Surpass API权限开放平台 ]](https://gitee.com/tomsun28/bootshiro)： 基于RBAC的API和权限开放平台，统一企业权限管理&基于SQL零代码开发 API 服务
+
 # 产品特性
 
 1. 标准协议
@@ -87,6 +88,7 @@ MaxKey <b>遵循 Apache License, Version 2.0 开源免费</b>，开源、安全�
 | 2.6     | LDAP          | OpenLDAP/ActiveDirectory/标准LDAP服务器 |
 | 2.7     | 社交账号      | 微信/QQ/微博/钉钉/Google/Facebook/其他  | 
 | 2.8     | 扫码登录      | 企业微信/钉钉/飞书扫码登录  | 
+| 2.9     | 无密码登录    | WebAuthn FIDO2/passkey  | 
 
 
 3. 提供标准的认证接口以便于其他应用集成SSO，安全的移动接入，安全的API、第三方认证和互联网认证的整合。
@@ -101,7 +103,7 @@ MaxKey <b>遵循 Apache License, Version 2.0 开源免费</b>，开源、安全�
 
 8.  配置化的密码策略、访问策略；支持Ip2region或GeoLite2地理库精准IP定位 ，强大安全审计，对用户全生命周期审计、访问行为记录追溯审计、安全合规审计、安全风险预警。
 
-9. 基于Java EE平台，微服务架构，采用Spring、MySQL、Tomcat、Redis、MQ等开源技术，扩展性强。  
+9. 基于Java EE平台，微服务架构，采用Spring、MySQL、Tomcat、Redis等开源技术，扩展性强。  
 
 10. 开源、安全、合规、自主可控。 
 
@@ -132,17 +134,17 @@ MaxKey <b>遵循 Apache License, Version 2.0 开源免费</b>，开源、安全�
 
 | 版本       | 日期    |  下载              | 
 | --------   | :-----  | :----              | 
-| v 4.1.7   | 2024/04/01   | <a href="https://www.maxkey.top/zh/about/download.html" target="_blank">下载</a>|
+| v 4.1.12   | 2026/06/30   | <a href="https://www.maxkey.top/zh/about/download.html" target="_blank">下载</a>|
  
  
 # 安装部署
 
-| 操作系统       | 安装手册    | 
-| --------      | :-----  |
-| Windows  | <a href="https://www.maxkey.top/zh/about/download.html"  target="_blank">链接</a>  |
-| Linux    | <a href="https://www.maxkey.top/zh/about/download.html"  target="_blank">链接</a>  |
-| Docker   | <a href="https://www.maxkey.top/zh/about/download.html"  target="_blank">链接</a>  |
-| 宝塔     | <a href="https://www.maxkey.top/zh/about/download.html"  target="_blank">链接</a>  |
+| 操作系统       | 安装手册    |
+| --------      | :-----  | 
+| Windows  | <a href="https://www.maxkey.top/zh/about/download.html"  target="_blank">链接</a>  | 
+| Linux    | <a href="https://www.maxkey.top/zh/about/download.html"  target="_blank">链接</a>  | 
+| Docker   | <a href="https://www.maxkey.top/zh/about/download.html"  target="_blank">链接</a>  | 
+| 宝塔 <a target="_blank" href="https://www.bt.cn/u/AjsXmi"> <img src="https://img.shields.io/badge/BT-Install-20a53a" /></a>| <a href="https://www.maxkey.top/zh/about/download.html"  target="_blank">链接</a>  |
  
  
 # License
@@ -353,4 +355,39 @@ MaxKey <b>遵循 Apache License, Version 2.0 开源免费</b>，开源、安全�
 | 167 | 云小厨CloudKitchens                         |
 | 168 | 深圳民生捷富凯物流有限公司                  |
 | 169 | 武汉璞华大数据技术有限公司                  |
-
+| 170 | 郑州数智技术研究院有限公司                   |
+| 171 | 石家庄财经职业学院                  |
+| 172 | 深圳市博科供应链管理有限公司                  |
+| 173 | 北京市第三十五中学                  |
+| 174 | 郑州市电子信息工程学校                  |
+| 175 | 中国金谷国际信托公司                  |
+| 176 | 金龙机电股份有限公司                  |
+| 177 | Skyline Exhibits                  |
+| 178 | 贵州贵安发展集团有限公司                  |
+| 179 | 河南地矿职业学院                  |
+| 180 | 天津轻工职业技术学院                  |
+| 181 | 乌海职业技术学院                  |
+| 182 | 河北建筑工程学院                  |
+| 183 | 炎黄职业技术学院                  |
+| 184 | 赤峰信息职业技术学校                  |
+| 185 | 江苏金旺智能科技有限公司                  |
+| 186 | 丰田智能电动汽车研发中心(中国)有限公司  |
+| 187 | 科学城（广州）投资集团有限公司                  |
+| 188 | 索菲亚家居股份有限公司                  |
+| 189 | 旭日信息科技（惠州）有限公司                  |
+| 190 | 东方希望集团                  |
+| 191 | 深圳市天一泓科技有限公司                  |
+| 192 | 莱克电气股份有限公司                  |
+| 193 | 陕西媒体融合统一平台                  |
+| 194 | 金易化工数字化智能管理平台                  |
+| 195 | 日照职业技术大学                  |
+| 196 | 高济健康/瓴创（北京）科技有限公司                  |
+| 197 | 甘肃供安宝科技有限公司                  |
+| 198 | 洞察时空（成都）科技有限公司                  |
+| 199 | 海南大学三亚研究院                  |
+| 200 | 特步集团                  |
+| 201 | New Balance / 新百伦贸易（中国）有限公司                 |
+| 202 | 广州潮洋服饰科技有限公司                  |
+| 203 | 江苏吴中集团有限公司                  |
+| 204 | 哈尔滨体育学院                  |
+| 205 | 上海胡桃网络科技有限公司                  |

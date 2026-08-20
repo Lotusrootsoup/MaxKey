@@ -20,6 +20,7 @@ package org.dromara.maxkey.persistence.service.impl;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import org.apache.commons.lang3.StringUtils;
 import org.dromara.maxkey.entity.apps.Apps;
 import org.dromara.maxkey.entity.apps.UserApps;
 import org.dromara.maxkey.persistence.mapper.AppsMapper;
@@ -31,49 +32,58 @@ import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
 
 @Repository
-public class AppsServiceImpl extends JpaServiceImpl<AppsMapper,Apps> implements AppsService{
-	//maxkey-mgt
-	public static final  	String MGT_APP_ID 		= "622076759805923328";
-	
-	public static final  	String DETAIL_SUFFIX	=	"_detail";
-	
-	protected static final   Cache<String, Apps> detailsCacheStore = 
-										Caffeine.newBuilder()
-							                .expireAfterWrite(30, TimeUnit.MINUTES)
-							                .build();
-	
-	public boolean insertApp(Apps app) {
-		return ((AppsMapper)super.getMapper()).insertApp(app)>0;
-	};
-	public boolean updateApp(Apps app) {
-		return ((AppsMapper)super.getMapper()).updateApp(app)>0;
-	};
-	
-	public boolean updateExtendAttr(Apps app) {
-		return ((AppsMapper)super.getMapper()).updateExtendAttr(app)>0;
-	}
-	
+public class AppsServiceImpl extends JpaServiceImpl<AppsMapper,Apps,String> implements AppsService{
+    //maxkey-mgt
+    public static final      String MGT_APP_ID         = "622076759805923328";
+    
+    public static final      String DETAIL_SUFFIX    =    "_detail";
+    
+    protected static final   Cache<String, Apps> detailsCacheStore = 
+                                        Caffeine.newBuilder()
+                                            .expireAfterWrite(30, TimeUnit.MINUTES)
+                                            .build();
+    
+    @Override
+    public boolean insertApp(Apps app) {
+        return ((AppsMapper)super.getMapper()).insertApp(app)>0;
+    };
+    @Override
+    public boolean updateApp(Apps app) {
+        return ((AppsMapper)super.getMapper()).updateApp(app)>0;
+    };
+    
+    @Override
+    public boolean updateExtendAttr(Apps app) {
+        return ((AppsMapper)super.getMapper()).updateExtendAttr(app)>0;
+    }
+    
+    @Override
     public List<UserApps> queryMyApps(UserApps userApplications){
         return getMapper().queryMyApps(userApplications);
     }
 
     //cache for running
+    @Override
     public void put(String appId, Apps appDetails) {
-    	detailsCacheStore.put(appId + DETAIL_SUFFIX, appDetails);
-	}
-	
+        detailsCacheStore.put(appId + DETAIL_SUFFIX, appDetails);
+    }
+    
+    @Override
     public Apps get(String appId, boolean cached) {
-    	appId = appId.equalsIgnoreCase("maxkey_mgt") ? MGT_APP_ID : appId;
-    	Apps appDetails = null;
-    	if(cached) {
-    		appDetails = detailsCacheStore.getIfPresent(appId + DETAIL_SUFFIX); 
-    		if(appDetails == null) {
-    			appDetails = this.get(appId);
-    			detailsCacheStore.put(appId, appDetails);
-    		}
-    	}else {
-    		appDetails = this.get(appId);
-    	}
+        if(StringUtils.isNotBlank(appId) 
+        		&& "maxkey_mgt".equalsIgnoreCase(appId) ) {
+        	appId = MGT_APP_ID ;
+        }
+        Apps appDetails = null;
+        if(cached) {
+            appDetails = detailsCacheStore.getIfPresent(appId + DETAIL_SUFFIX); 
+            if(appDetails == null) {
+                appDetails = this.get(appId);
+                detailsCacheStore.put(appId, appDetails);
+            }
+        }else {
+            appDetails = this.get(appId);
+        }
         return appDetails;
     }
     

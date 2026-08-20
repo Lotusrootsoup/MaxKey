@@ -1,4 +1,152 @@
-﻿MaxKey v 4.1.7 GA 2025/04/01
+﻿MaxKey v 4.1.12 2026/06/30
+    *(MAXKEY-260601) 管理端密码修改问题
+    *(MAXKEY-260602) remove build_*.gradle，保留*_boot.jar打包方式
+    *(MAXKEY-260603) getAppDetails rename to get & cached load
+    *(MAXKEY-260604) Skip OAuth 2 authorize approval
+    *(MAXKEY-260605) Update AuthTokenRefreshPoint，刷新token优化
+    *(MAXKEY-260606) IdGeneratorFactory 优化
+    *(MAXKEY-260607) JwtAuthorizeEndpoint to org.dromara.maxkey.authz.jwt.endpoint
+    *(MAXKEY-260608) 去除外部SAML元数据请求
+    *(MAXKEY-260609) 代码优化和调整
+    *(MAXKEY-260610) 依赖项引用、更新和升级
+            springVersion                 6.2.19
+            springBootVersion             3.5.16
+            springSecurityVersion         6.5.11
+            springDataVersion             3.5.13
+            tomcatVersion                 10.1.56
+            caffeineVersion               3.2.4
+            log4jVersion                  2.25.4
+            jbossloggingVersion           3.6.3.Final
+            
+MaxKey v 4.1.11 2026/02/02
+    *(MAXKEY-260101) remove build_docker.gradle
+    *(MAXKEY-260102) RestTimeBasedOtpController优化
+    *(MAXKEY-260103) Unnecessary path variable definition [WEB_ANNOTATION_NAMES]
+    *(MAXKEY-260104) update NOTICE. 术语大小写不规范 by smxzk32145745 
+    *(MAXKEY-260105) README 优化 by smxzk32145745 
+    *(MAXKEY-260106) remove provision
+    *(MAXKEY-260107) redirect_uri 被Xss拦截器拦截 #IDEANO 
+    *(MAXKEY-260108) Cas Proxy分离
+    *(MAXKEY-260109) cas 目录优化
+    *(MAXKEY-260110) #IDGR9O cas登录grantingTicket生成的url会有重复参数
+    *(MAXKEY-260111) 使用client_credentials获取token报空指针 #IDK3Q0
+    *(MAXKEY-260112) 密码策略-密码过期取值范围问题修复
+    *(MAXKEY-260113) 代码优化和调整
+    *(MAXKEY-260114) 依赖项引用、更新和升级
+            springVersion                   6.2.15
+            springBootVersion               3.5.9
+            springcloudVersion              4.3.1
+            
+MaxKey v 4.1.10 2025/12/13
+    *(MAXKEY-250601) 管理端密码修改在列表“更多”
+    *(MAXKEY-250602) Frontend Dockerfile
+    *(MAXKEY-250603) tableHasCheckedItem
+    *(MAXKEY-250604) 合并 用户编辑 机构信息和机构扩展信息
+    *(MAXKEY-250605) fix(starter-otp/MailOtpAuthn): 修复因为 ssl 配置未生效致使使用qq邮箱配置时, 选择ssl端口无法发送并报 by teratemitz 
+    *(MAXKEY-250606) 前端图片操作优化
+    *(MAXKEY-250607) #255  修复邮件发送OTP时, 邮件配置SSL未启用导致发送失败的问题
+    *(MAXKEY-250608) #ID3WQ3 修复query.in问题
+    *(MAXKEY-250609) 静态资源引入改为https 避免打包后生产环境使用报错 by link2fun 
+    *(MAXKEY-250610) 管理端增加官方网站链接菜单
+    *(MAXKEY-250611) appendScriptSrc
+    *(MAXKEY-250612) #257 fix: 接口需要禁止删除组织 Organizations#ROOT_ORG_ID 否则会导致同步器工作异常  by link2fun 
+    *(MAXKEY-250613) #258 fix: 修复机构配置修改后缓存没有清空，导致界面上看上去 修改失败了  by link2fun 
+    *(MAXKEY-250614) login loading
+    *(MAXKEY-250615) 完善企业微信同步器同步,修正 已同步的组织被删除后 后续同步无法恢复 & 代码整理  by link2fun 
+    *(MAXKEY-250616) 删除商业数据库驱动需手动引入
+    *(MAXKEY-250617) 对企业微信用户同步进行一些场景判断 , 大致应该是分成了4种情况优化  by link2fun 
+    *(MAXKEY-250618) 企业微信用户同步 增加自动禁用离职用户账号   by link2fun 
+    *(MAXKEY-250619) #260 完善企业微信同步器同步 同步组织和用户覆盖更多场景 by link2fun 
+    *(MAXKEY-250620) 修复 编辑应用 生成应用密钥无法自动回填 by link2fun 
+    *(MAXKEY-250621) cas Response & druid & org.dromara.maxkey.http优化
+    *(MAXKEY-250622) package controller
+    *(MAXKEY-250623) Gradle 9.1.0
+    *(MAXKEY-250624) OneTimePasswordAutoConfiguration优化
+    *(MAXKEY-250625) Update IdTimeSequence.java
+    *(MAXKEY-250626) RequestTokenUtils move to org.dromara.maxkey.http
+    *(MAXKEY-250627) freemarker use slf4j
+    *(MAXKEY-250628) maxkey-starter-web-static
+    *(MAXKEY-250629) 默认关闭 actuator，消除actuator 未授权访问漏洞
+    *(MAXKEY-250630) 新建 org.dromara.maxkey.id
+    *(MAXKEY-250631) sql olderVersions
+    *(MAXKEY-250632) actuator and /swagger-ui 安全性增强
+    *(MAXKEY-250633) eclipse jdt settings
+    *(MAXKEY-250634) swagger参数优化及依赖升级
+    *(MAXKEY-250635) 增加SQL文件的说明
+    *(MAXKEY-250636) gradle repositories优化部分地址，增加org.gradle.caching=true
+    *(MAXKEY-250637) 依赖项引用、更新和升级
+            springVersion                   6.2.14
+            springBootVersion               3.4.12
+            springSecurityVersion           6.5.7
+            springDataVersion               3.5.6
+            springkafkaVersion              3.3.11
+            springbootpluginVersion         3.4.12
+            tomcatVersion                   10.1.49
+            mybatisjpaextraVersion          3.3.8
+            jakartamailapiVersion           2.1.5
+            jakartaxmlbindapiVersion        4.0.4
+            angusmailVersion                2.0.5
+            classmateVersion                1.7.1
+            swaggerV3Version                2.2.41
+            classgraphVersion               4.8.184
+            webjarslocatorliteVersion       1.1.2
+            swaggeruiVersion                5.30.3
+            springdocVersion                2.8.14
+            
+MaxKey v 4.1.9 GA 2025/10/10
+    *(MAXKEY-250501) #248 最新镜像 启动登陆异常
+    *(MAXKEY-250502) 仪表盘显示和数据优化，增加totalUsers、totalDepts、totalApps统计
+    *(MAXKEY-250503) 开源之夏-官方操作手册 by xiaoyvhuv
+    *(MAXKEY-250504) 开源之夏-WebAuth passkey认证支持 by Spock12138
+    *(MAXKEY-250505) #57 去掉密码策略校验 当密码错误次数超过6次被暂定锁定后，社交登录时也会报错被锁定 by zwj 
+    *(MAXKEY-250506) 点击部门分页问题修复
+    *(MAXKEY-250507) #67 modify dockerfile Merge pull request !1 from 乐淘
+    *(MAXKEY-250508) 访问控制分页问题修复
+    *(MAXKEY-250509) build.gradle优化
+    *(MAXKEY-250510) 管理端增加官方网站链接菜单
+    *(MAXKEY-250511) mybatis-jpa-extra升级优化
+    *(MAXKEY-250512) release.bat构建脚本优化
+    *(MAXKEY-250513) 社交服务 ->社交登录
+    *(MAXKEY-250514) 国际化切换图标修改，English abbr EN，zh-CN abbr CN
+    *(MAXKEY-250515) sql文件数据结构和数据合并成一个问题maxkey.sql
+    *(MAXKEY-250516) 依赖项引用、更新和升级
+            springVersion                   6.2.11
+            springBootVersion               3.4.10
+            springSecurityVersion           6.5.5
+            springDataVersion               3.5.4
+            springkafkaVersion              3.3.10
+            jakartaactivationVersion        2.1.4
+            jakartamailapiVersion           2.1.4
+            xmlunitVersion                  2.10.4
+            mybatis-jpa-extra               3.3.6
+            log4jVersion                    2.25.2
+            
+MaxKey v 4.1.8 GA 2025/08/01
+    *(MAXKEY-250401) 二次认证
+    *(MAXKEY-250402) MaxKeyOpenApiApplication name MaxKeyApiApplication
+    *(MAXKEY-250403) 缓存优化
+    *(MAXKEY-250404) maxkey-core 拆分 maxkey-entity maxkey-cache
+    *(MAXKEY-250405) maxkey-common 拆分maxkey-crypto、maxkey-ldap & maxkey-commons 
+    *(MAXKEY-250406) 缓存验证码过期异常问题
+    *(MAXKEY-250407) 二次认证的配置
+    *(MAXKEY-250408) /functionList 获取应用功能权限清单
+    *(MAXKEY-250409) #IBY0OL 长时间未操作，验证码无法登录
+    *(MAXKEY-250410) 用户和组织的排序优化
+    *(MAXKEY-250411) 密码修改入口优化
+    *(MAXKEY-250412) Groups.service.ts rename groups.service.ts
+    *(MAXKEY-250413) 代码整合和优化
+    *(MAXKEY-250414) 开源之夏任务讲解和具体事项说明
+    *(MAXKEY-250415) angular.json optimize
+    *(MAXKEY-250416) 依赖项引用、更新和升级
+            springVersion                   6.2.9
+            springBootVersion               3.4.8
+            springSecurityVersion           6.5.2
+            springDataVersion               3.5.2
+            springkafkaVersion              3.3.8
+            tomcatVersion                   10.1.43
+            jacksonVersion                  2.18.4
+            
+MaxKey v 4.1.7 GA 2025/04/01
     *(MAXKEY-250301) #IBQEYU 使用 AccessToken 验证身份报错session is null
     *(MAXKEY-250302) org.dromara.maxkey.web.component to org.dromara.maxkey.entity
     *(MAXKEY-250303) remove query submitLoading

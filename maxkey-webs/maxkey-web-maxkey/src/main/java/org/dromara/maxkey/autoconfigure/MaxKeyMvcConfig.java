@@ -50,7 +50,7 @@ public class MaxKeyMvcConfig implements WebMvcConfigurer {
     private String httpHeaderName;
     
     @Autowired
-  	ApplicationConfig applicationConfig;
+      ApplicationConfig applicationConfig;
     
     @Autowired
     AbstractAuthenticationProvider authenticationProvider ;
@@ -74,8 +74,8 @@ public class MaxKeyMvcConfig implements WebMvcConfigurer {
         
         logger.debug("add Http Kerberos Entry Point");
         registry.addInterceptor(new HttpKerberosEntryPoint(
-    			authenticationProvider,kerberosService,applicationConfig,true))
-    		.addPathPatterns("/login");
+                authenticationProvider,kerberosService,applicationConfig,true))
+            .addPathPatterns("/login");
         
         
         if(httpHeaderEnable) {
@@ -102,10 +102,13 @@ public class MaxKeyMvcConfig implements WebMvcConfigurer {
                 .addPathPatterns("/socialsignon/**")
                 .addPathPatterns("/authz/credential/**")
                 .addPathPatterns("/authz/oauth/v20/approval_confirm/**")
-        		.addPathPatterns("/authz/oauth/v20/authorize/approval/**")
-        		.addPathPatterns("/logon/oauth20/bind/**")
-        		.addPathPatterns("/logout")
+                .addPathPatterns("/authz/oauth/v20/authorize/approval/**")
+                .addPathPatterns("/logon/oauth20/bind/**")
+                .addPathPatterns("/logout")
                 .addPathPatterns("/logout/**")
+                .addPathPatterns("/passkey/registration/**")
+                .addPathPatterns("/passkey/registration/**/**")
+                .addPathPatterns("/passkey/registration/**/**/**")
                 .addPathPatterns("/authz/refused")
                 .excludePathPatterns("/logon/oauth20/**/**")
                 .excludePathPatterns("/swagger-ui/**")

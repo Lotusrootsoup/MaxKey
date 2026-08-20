@@ -21,15 +21,21 @@ import java.util.List;
 
 import org.dromara.maxkey.entity.SynchroRelated;
 import org.dromara.maxkey.entity.Synchronizers;
-import org.dromara.mybatis.jpa.IJpaService;
+import org.dromara.mybatis.jpa.service.IJpaService;
 
-public interface SynchroRelatedService  extends IJpaService<SynchroRelated>{
+public interface SynchroRelatedService  extends IJpaService<SynchroRelated,String>{
 
-	public int updateSyncTime(SynchroRelated synchroRelated);
-	
-	public List<SynchroRelated> findOrgs(Synchronizers synchronizer) ;
-	
-	public SynchroRelated findByOriginId(Synchronizers synchronizer,String originId,String classType) ;
-	
-	public void updateSynchroRelated(Synchronizers synchronizer,SynchroRelated synchroRelated,String classType) ;
+    public int updateSyncTime(SynchroRelated synchroRelated);
+    
+    public List<SynchroRelated> findOrgs(Synchronizers synchronizer) ;
+    
+    public SynchroRelated findByOriginId(Synchronizers synchronizer,String originId,String classType) ;
+    
+     /**
+     * 根据 同步器 + originId + classType 查询同步关系, 如果存在则更新, 不存在则插入
+     * @param synchronizer 同步器
+     * @param synchroRelated 同步关系
+     * @param classType 对象类型
+     */
+    public void updateSynchroRelated(Synchronizers synchronizer,SynchroRelated synchroRelated,String classType) ;
 }

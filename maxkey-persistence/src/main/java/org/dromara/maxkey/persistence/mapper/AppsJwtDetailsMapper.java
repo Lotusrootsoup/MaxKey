@@ -27,7 +27,7 @@ import org.dromara.mybatis.jpa.IJpaMapper;
  * @author Crystal.sea
  *
  */
-public  interface AppsJwtDetailsMapper extends IJpaMapper<AppsJwtDetails> {
-	
-	public  AppsJwtDetails  getAppDetails(String id);
+public  interface AppsJwtDetailsMapper extends IJpaMapper<AppsJwtDetails,String> {
+    
+    public  AppsJwtDetails  getAppDetails(String id);
 }

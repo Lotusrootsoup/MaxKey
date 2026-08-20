@@ -38,7 +38,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class RolesServiceImpl  extends JpaServiceImpl<RolesMapper,Roles> implements RolesService{
+public class RolesServiceImpl  extends JpaServiceImpl<RolesMapper,Roles,String> implements RolesService{
     static final  Logger _logger = LoggerFactory.getLogger(RolesServiceImpl.class);
     
     @Autowired
@@ -47,72 +47,50 @@ public class RolesServiceImpl  extends JpaServiceImpl<RolesMapper,Roles> impleme
     @Autowired
     InstitutionsService institutionsService;
 
-	
-	public List<Roles> queryDynamicRoles(Roles groups){
-	    return this.getMapper().queryDynamicRoles(groups);
-	}
-	
-	public boolean deleteById(String groupId) {
-	    this.delete(groupId);
-	    roleMemberService.deleteByRoleId(groupId);
-	    return true;
-	}
-	
-	public List<Roles> queryRolesByUserId(String userId){
-		return this.getMapper().queryRolesByUserId(userId);
-	}
-	
-	public void refreshDynamicRoles(Roles dynamicRole){
-	    if(dynamicRole.getCategory().equals(Roles.Category.DYNAMIC)) {
-	        
-	        if(StringUtils.isNotBlank(dynamicRole.getOrgIdsList())) {
-    	    	String []orgIds = dynamicRole.getOrgIdsList().split(",");
-    	    	StringBuffer orgIdFilters = new StringBuffer();
-    	    	for(String orgId : orgIds) {
-    	    		if(StringUtils.isNotBlank(orgId)) {
-	    	    		if(orgIdFilters.length() > 0) {
-	    	    			orgIdFilters.append(",");
-	    	    		}
-	    	    		orgIdFilters.append("'").append(orgId).append("'");
-    	    		}
-    	    	}
-    	    	if(orgIdFilters.length() > 0) {
-    	    		dynamicRole.setOrgIdsList(orgIdFilters.toString());
-    	    	}
-    	    }
-	        
-    	    String filters = dynamicRole.getFilters();
-    	    _logger.debug("filters {}" , filters);
-    	    if(StringUtils.isNotBlank(filters)) {
-	    		if(StrUtils.filtersSQLInjection(filters.toLowerCase())) {  
-	    			_logger.info("filters include SQL Injection Attack Risk.");
-	    			return;
-	    		}
-	    		//replace & with AND, | with OR
-	    		filters = filters.replace("&", " AND ").replace("\\|", " OR ");
-	    	    
-	    		_logger.debug("set filters {}" , filters);
-	    	    dynamicRole.setFilters(filters);
-    	    }
-	    
-	    	roleMemberService.deleteDynamicRoleMember(dynamicRole);
-	    	roleMemberService.addDynamicRoleMember(dynamicRole);
-        
-	    }
+    
+    @Override
+    public List<Roles> queryDynamicRoles(Roles groups){
+        return this.getMapper().queryDynamicRoles(groups);
     }
-	
-	public void refreshAllDynamicRoles(){
-		List<Institutions> instList = 
-				institutionsService.find("where status = ? ", new Object[]{ConstsStatus.ACTIVE}, new int[]{Types.INTEGER});
-		for(Institutions inst : instList) {
-			Roles role = new Roles();
-			role.setInstId(inst.getId());
-		    List<Roles>  rolesList = queryDynamicRoles(role);
-	        for(Roles r : rolesList) {
-	            _logger.debug("role {}" , r);
-	            refreshDynamicRoles(r);
-	        }
-		}
-	}
+    
+    @Override
+    public boolean deleteById(String groupId) {
+        this.delete(groupId);
+        roleMemberService.deleteByRoleId(groupId);
+        return true;
+    }
+    
+    @Override
+    public List<Roles> queryRolesByUserId(String userId){
+        return this.getMapper().queryRolesByUserId(userId);
+    }
+    
+    @Override
+    public void refreshDynamicRoles(Roles dynamicRole){
+        if(dynamicRole.getCategory().equals(Roles.Category.DYNAMIC)) {
+        	if(StringUtils.isNotBlank(dynamicRole.getOrgIdsList())) {
+        		dynamicRole.setOrgIds(StrUtils.string2List(dynamicRole.getOrgIdsList(), ","));
+                _logger.debug("OrgIds {}" , dynamicRole.getOrgIds());
+            }
+            roleMemberService.deleteDynamicRoleMember(dynamicRole);
+            roleMemberService.addDynamicRoleMember(dynamicRole);
+        
+        }
+    }
+    
+    @Override
+    public void refreshAllDynamicRoles(){
+        List<Institutions> instList = 
+                institutionsService.find("where status = ? ", new Object[]{ConstsStatus.ACTIVE}, new int[]{Types.INTEGER});
+        for(Institutions inst : instList) {
+            Roles role = new Roles();
+            role.setInstId(inst.getId());
+            List<Roles>  rolesList = queryDynamicRoles(role);
+            for(Roles r : rolesList) {
+                _logger.debug("role {}" , r);
+                refreshDynamicRoles(r);
+            }
+        }
+    }
 
 }

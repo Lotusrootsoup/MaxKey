@@ -31,39 +31,44 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class GroupMemberServiceImpl  extends JpaServiceImpl<GroupMemberMapper,GroupMember> implements GroupMemberService{
-	static final  Logger _logger = LoggerFactory.getLogger(GroupMemberServiceImpl.class);
+public class GroupMemberServiceImpl  extends JpaServiceImpl<GroupMemberMapper,GroupMember,String> implements GroupMemberService{
+    static final  Logger _logger = LoggerFactory.getLogger(GroupMemberServiceImpl.class);
 
-	public int addDynamicMember(Groups dynamicGroup) {
-	    return getMapper().addDynamicMember(dynamicGroup);
-	}
-	
-	public int deleteDynamicMember(Groups dynamicGroup) {
-	    return getMapper().deleteDynamicMember(dynamicGroup);
-	}
-	
-	public int deleteByGroupId(String groupId) {
+    @Override
+    public int addDynamicMember(Groups dynamicGroup) {
+        return getMapper().addDynamicMember(dynamicGroup);
+    }
+    
+    @Override
+    public int deleteDynamicMember(Groups dynamicGroup) {
+        return getMapper().deleteDynamicMember(dynamicGroup);
+    }
+    
+    @Override
+    public int deleteByGroupId(String groupId) {
         return getMapper().deleteByGroupId(groupId);
     }
-	
-	public List<UserInfo> queryMemberByGroupId(String groupId){
-		return getMapper().queryMemberByGroupId(groupId);
-	}
-	
-	
-	public JpaPageResults<Groups> noMember(GroupMember entity) {
-		beforePageResults(entity);
-		List<Groups> resultslist = null;
-		try {
-			resultslist = getMapper().noMember(entity);
-		} catch (Exception e) {
-			_logger.error("queryPageResults Exception " , e);
-		}
-		//当前页记录数
-		Integer records = parseRecords(resultslist);
-		//总页数
-		Integer totalCount =fetchCount(entity, resultslist);
-		return new JpaPageResults<Groups>(entity.getPageNumber(),entity.getPageSize(),records,totalCount,resultslist);
-	}
-	
+    
+    @Override
+    public List<UserInfo> queryMemberByGroupId(String groupId){
+        return getMapper().queryMemberByGroupId(groupId);
+    }
+    
+    
+    @Override
+    public JpaPageResults<Groups> noMember(GroupMember entity) {
+        entity.build();
+        List<Groups> resultslist = null;
+        try {
+            resultslist = getMapper().noMember(entity);
+        } catch (Exception e) {
+            _logger.error("queryPageResults Exception " , e);
+        }
+        //当前页记录数
+        Integer records = JpaPageResults.parseRecords(resultslist);
+        //总页数
+        Integer totalCount =fetchCount(entity, resultslist);
+        return new JpaPageResults<Groups>(entity.getPageNumber(),entity.getPageSize(),records,totalCount,resultslist);
+    }
+    
 }

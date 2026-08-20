@@ -49,13 +49,13 @@ public class SmsOtpAuthnYunxin extends SmsOtpAuthn {
     }
 
     public SmsOtpAuthnYunxin(String appKey, String appSecret, String templateId) {
-    	otpType = OtpTypes.SMS;
-		this.appKey = appKey;
-		this.appSecret = appSecret;
-		this.templateId = templateId;
-	}
+        otpType = OtpTypes.SMS;
+        this.appKey = appKey;
+        this.appSecret = appSecret;
+        this.templateId = templateId;
+    }
 
-	//发送验证码的请求路径URL
+    //发送验证码的请求路径URL
     private static final String
             SERVER_URL = "https://api.netease.im/sms/sendcode.action";
     //网易云信分配的账号，请替换你在管理后台应用下申请的Appkey
@@ -72,7 +72,7 @@ public class SmsOtpAuthnYunxin extends SmsOtpAuthn {
         HttpPost httpPost = null;
         // 手机号
         String mobile = userInfo.getMobile();
-        if (mobile != null && !mobile.equals("")) {
+        if (mobile != null && !"".equals(mobile)) {
             try {
                 httpPost = new HttpPost(SERVER_URL);
                 String curTime = String.valueOf((new Date()).getTime() / 1000L);
@@ -124,7 +124,7 @@ public class SmsOtpAuthnYunxin extends SmsOtpAuthn {
                 //String responseString = "{\"code\":200,\"msg\":\"1\",\"obj\":\"740673\"}";
                 logger.debug("responseString " + responseString);
                 YunxinSms  yunxinSms = 
-                        JsonUtils.gsonStringToObject(responseString,YunxinSms.class);
+                        JsonUtils.stringToObject(responseString,YunxinSms.class);
                 logger.debug("responseEntity code " + yunxinSms.getObj());
                 nonce = yunxinSms.getObj() == null ?nonce:yunxinSms.getObj();
                 logger.debug("nonce " + nonce);
@@ -226,7 +226,7 @@ public class SmsOtpAuthnYunxin extends SmsOtpAuthn {
             ).randomGenerate();
         System.out.println(nonce);
         String mapJson = "{\"code\":200,\"msg\":\"1\",\"obj\":\"740673\"}";
-        YunxinSms  yunxinSms = JsonUtils.gsonStringToObject(mapJson,YunxinSms.class);  
+        YunxinSms  yunxinSms = JsonUtils.stringToObject(mapJson,YunxinSms.class);  
         System.out.println("code " + yunxinSms.getObj());
     }
     

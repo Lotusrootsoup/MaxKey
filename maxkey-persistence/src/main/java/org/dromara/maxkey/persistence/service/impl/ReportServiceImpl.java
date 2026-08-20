@@ -18,9 +18,10 @@
 package org.dromara.maxkey.persistence.service.impl;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.dromara.maxkey.entity.dto.InstDto;
 import org.dromara.maxkey.persistence.mapper.ReportMapper;
 import org.dromara.maxkey.persistence.service.ReportService;
 import org.dromara.mybatis.jpa.entity.JpaEntity;
@@ -28,66 +29,101 @@ import org.dromara.mybatis.jpa.service.impl.JpaServiceImpl;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class ReportServiceImpl  extends JpaServiceImpl<ReportMapper,JpaEntity> implements ReportService{
+public class ReportServiceImpl  extends JpaServiceImpl<ReportMapper,JpaEntity,String> implements ReportService{
 
-	public Integer analysisDay(HashMap<String,Object> reportParameter) {
-		return getMapper().analysisDay(reportParameter);
-	};
-	
-	public Integer analysisNewUsers(HashMap<String,Object> reportParameter) {
-		return getMapper().analysisNewUsers(reportParameter);
-	};
-	
-	public Integer analysisOnlineUsers(HashMap<String,Object> reportParameter) {
-		return getMapper().analysisOnlineUsers(reportParameter);
-	};
-	
-	public Integer analysisActiveUsers(HashMap<String,Object> reportParameter) {
-		return getMapper().analysisActiveUsers(reportParameter);
-	};
-	
-	public List<Map<String,Object>> analysisDayHour(HashMap<String,Object> reportParameter){
-		return getMapper().analysisDayHour(reportParameter);
+    @Override
+    public Integer analysisDayCount(InstDto inst) {
+        return getMapper().analysisDayCount(inst);
+    }
+    
+    @Override
+    public Integer analysisNewUsers(InstDto inst) {
+        return getMapper().analysisNewUsers(inst);
+    }
+    
+    @Override
+    public Integer analysisOnlineUsers(InstDto inst) {
+        return getMapper().analysisOnlineUsers(inst);
+    }
+    
+    @Override
+    public Integer analysisActiveUsers(InstDto inst) {
+        return getMapper().analysisActiveUsers(inst);
+    }
+    
+    @Override
+    public Integer totalUsers(InstDto inst) {
+        return getMapper().totalUsers(inst);
+    }
+    
+    @Override
+    public Integer totalDepts(InstDto inst) {
+        return getMapper().totalDepts(inst);
+    }
+    
+    @Override
+    public Integer totalApps(InstDto inst) {
+        return getMapper().totalApps(inst);
+    }
+    
+    @Override
+    public List<Map<String,Object>> analysisDayHour(InstDto inst){
+        return getMapper().analysisDayHour(inst);
+    }
+    
+    @Override
+    public List<Map<String,Object>> analysisMonth(InstDto inst){
+        return getMapper().analysisMonth(inst);
+    }
+    
+    
+    @Override
+    public List<Map<String,Object>> analysisBrowser(InstDto inst){
+        return getMapper().analysisBrowser(inst);
+    }
+    
+    @Override
+    public List<Map<String,Object>> analysisApp(InstDto inst){
+        return getMapper().analysisApp(inst);
+    }
+    
+    @Override
+    public List<Map<String,Object>> analysisProvince(InstDto inst){
+        List<Map<String,Object>> maps = getMapper().analysisProvince(inst);
+        if(null == maps) {
+            return new ArrayList<>();
+        }
+        for(Map<String,Object> map : maps) {
+            if(map.containsKey("reportstring")){
+                String name = map.get("reportstring").toString();
+                if (name.endsWith("省")
+                        || name.endsWith("市")
+                        || name.endsWith("特别行政区")
+                        || name.endsWith("自治区")) {
+                    name = name.replace("省","")
+                            .replace("市","")
+                            .replace("特别行政区","")
+                            .replace("自治区","");
+                }
+                map.put("name",name);
+            }
+        }
+        return maps;
+    }
+    
+    @Override
+    public List<Map<String,Object>> analysisCountry(InstDto inst){
+        return getMapper().analysisCountry(inst);
+    }
+
+	@Override
+	public Integer analysisMonthCount(InstDto inst) {
+		return getMapper().analysisMonthCount(inst);
 	}
-	
-	public List<Map<String,Object>> analysisMonth(HashMap<String,Object> reportParameter){
-		return getMapper().analysisMonth(reportParameter);
+
+	@Override
+	public Integer totalGroups(InstDto inst) {
+		return getMapper().totalGroups(inst);
 	}
-	
-	
-	public List<Map<String,Object>> analysisBrowser(HashMap<String,Object> reportParameter){
-		return getMapper().analysisBrowser(reportParameter);
-	}
-	
-	public List<Map<String,Object>> analysisApp(HashMap<String,Object> reportParameter){
-		return getMapper().analysisApp(reportParameter);
-	}
-	
-	public List<Map<String,Object>> analysisProvince(HashMap<String,Object> reportParameter){
-		List<Map<String,Object>> maps = getMapper().analysisProvince(reportParameter);
-		if(null == maps) {
-			return new ArrayList<>();
-		}
-		for(Map<String,Object> map : maps) {
-			if(map.containsKey("reportstring")){
-				String name = map.get("reportstring").toString();
-				if (name.endsWith("省")
-						|| name.endsWith("市")
-						|| name.endsWith("特别行政区")
-						|| name.endsWith("自治区")) {
-					name = name.replace("省","")
-							.replace("市","")
-							.replace("特别行政区","")
-							.replace("自治区","");
-				}
-				map.put("name",name);
-			}
-		}
-		return maps;
-	}
-	
-	public List<Map<String,Object>> analysisCountry(HashMap<String,Object> reportParameter){
-		return getMapper().analysisCountry(reportParameter);
-	}
-	
+    
 }

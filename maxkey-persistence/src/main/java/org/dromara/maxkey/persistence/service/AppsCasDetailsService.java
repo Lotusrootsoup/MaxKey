@@ -18,9 +18,9 @@
 package org.dromara.maxkey.persistence.service;
 
 import org.dromara.maxkey.entity.apps.AppsCasDetails;
-import org.dromara.mybatis.jpa.IJpaService;
+import org.dromara.mybatis.jpa.service.IJpaService;
 
-public interface AppsCasDetailsService  extends IJpaService<AppsCasDetails>{
+public interface AppsCasDetailsService  extends IJpaService<AppsCasDetails,String>{
 
-	public  AppsCasDetails  getAppDetails(String id , boolean cached) ;
+    public  AppsCasDetails  get(String id , boolean cached) ;
 }

@@ -20,17 +20,17 @@ package org.dromara.maxkey.persistence.service;
 import java.util.List;
 
 import org.dromara.maxkey.entity.idm.Organizations;
-import org.dromara.mybatis.jpa.IJpaService;
+import org.dromara.mybatis.jpa.service.IJpaService;
 
 
-public interface OrganizationsService  extends IJpaService<Organizations>{
+public interface OrganizationsService  extends IJpaService<Organizations,String>{
 
-	 public void saveOrUpdate(Organizations organization) ;
-	 
-	 public List<Organizations> queryOrgs(Organizations organization);
-	 
-	 public boolean delete(Organizations organization) ;
+     public void saveOrUpdate(Organizations organization) ;
+     
+     public List<Organizations> queryOrgs(Organizations organization);
+     
+     public boolean delete(Organizations organization) ;
 
-	public void reorgNamePath(String instId) ;
+    public void reorgNamePath(String instId) ;
 
 }

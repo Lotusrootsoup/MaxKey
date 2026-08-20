@@ -18,12 +18,19 @@
 package org.dromara.maxkey.persistence.service;
 
 import org.dromara.maxkey.entity.Institutions;
-import org.dromara.mybatis.jpa.IJpaService;
+import org.dromara.mybatis.jpa.service.IJpaService;
 
-public interface InstitutionsService  extends IJpaService<Institutions>{
+public interface InstitutionsService  extends IJpaService<Institutions,String>{
 
-	 public Institutions findByDomain(String domain) ;
-	 
-	 
-	 public Institutions get(String instIdOrDomain) ;
+     public Institutions findByDomain(String domain) ;
+
+
+     @Override
+     public Institutions get(String instIdOrDomain) ;
+
+     /**
+      * 清除指定机构的缓存
+      * @param instIdOrDomain 机构ID或域名
+      */
+     void clearInstitutionsCache(String instIdOrDomain);
 }

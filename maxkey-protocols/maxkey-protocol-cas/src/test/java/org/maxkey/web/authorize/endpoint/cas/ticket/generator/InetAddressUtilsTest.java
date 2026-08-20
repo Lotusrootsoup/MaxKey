@@ -17,15 +17,15 @@
 
 package org.maxkey.web.authorize.endpoint.cas.ticket.generator;
 
-import org.dromara.maxkey.authz.cas.endpoint.ticket.generator.InetAddressUtils;
+import org.dromara.maxkey.authz.cas.ticket.generator.InetAddressUtils;
 
 public class InetAddressUtilsTest {
 
-	public InetAddressUtilsTest() {
-	}
+    public InetAddressUtilsTest() {
+    }
 
-	public static void main(String[] args) {
-		System.out.println(InetAddressUtils.getCasServerHostName());
-	}
+    public static void main(String[] args) {
+        System.out.println(InetAddressUtils.getCasServerHostName());
+    }
 
 }

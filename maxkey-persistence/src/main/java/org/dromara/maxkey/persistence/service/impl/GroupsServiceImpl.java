@@ -37,7 +37,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class GroupsServiceImpl  extends JpaServiceImpl<GroupsMapper,Groups> implements GroupsService{
+public class GroupsServiceImpl  extends JpaServiceImpl<GroupsMapper,Groups,String> implements GroupsService{
     static final  Logger _logger = LoggerFactory.getLogger(GroupsServiceImpl.class);
 
     @Autowired
@@ -46,69 +46,48 @@ public class GroupsServiceImpl  extends JpaServiceImpl<GroupsMapper,Groups> impl
     @Autowired
     InstitutionsService institutionsService;
     
-	public List<Groups> queryDynamicGroups(Groups groups){
-	    return this.getMapper().queryDynamic(groups);
-	}
-	
-	public boolean deleteById(String groupId) {
-	    this.delete(groupId);
-	    groupMemberService.deleteByGroupId(groupId);
-	    return true;
-	}
-	
-	public List<Groups> queryByUserId(String userId){
-		return this.getMapper().queryByUserId(userId);
-	}
-	
-	public void refreshDynamicGroups(Groups dynamicGroup){
-	    if(dynamicGroup.getCategory().equals(Roles.Category.DYNAMIC)) {
-	        
-	        if(StringUtils.isNotBlank(dynamicGroup.getOrgIdsList())) {
-    	    	String []orgIds = dynamicGroup.getOrgIdsList().split(",");
-    	    	StringBuffer orgIdFilters = new StringBuffer();
-    	    	for(String orgId : orgIds) {
-    	    		if(StringUtils.isNotBlank(orgId)) {
-	    	    		if(orgIdFilters.length() > 0) {
-	    	    			orgIdFilters.append(",");
-	    	    		}
-	    	    		orgIdFilters.append("'").append(orgId).append("'");
-    	    		}
-    	    	}
-    	    	if(orgIdFilters.length() > 0) {
-    	    		dynamicGroup.setOrgIdsList(orgIdFilters.toString());
-    	    	}
-    	    }
-	        
-    	    String filters = dynamicGroup.getFilters();
-    	    if(StringUtils.isNotBlank(filters)) {
-	    		if(StrUtils.filtersSQLInjection(filters.toLowerCase())) {  
-	    			_logger.info("filters include SQL Injection Attack Risk.");
-	    			return;
-	    		}
-	    		//replace & with AND, | with OR
-	    		filters = filters.replace("&", " AND ").replace("|", " OR ");
-	    	    
-	    	    dynamicGroup.setFilters(filters);
-    	    }
-	    
-	    	groupMemberService.deleteDynamicMember(dynamicGroup);
-	    	groupMemberService.addDynamicMember(dynamicGroup);
-            
-	    }
+    @Override
+    public List<Groups> queryDynamicGroups(Groups groups){
+        return this.getMapper().queryDynamic(groups);
     }
-	
-	public void refreshAllDynamicGroups(){
-		List<Institutions> instList = 
-				institutionsService.find("where status = ? ", new Object[]{ConstsStatus.ACTIVE}, new int[]{Types.INTEGER});
-		for(Institutions inst : instList) {
-			Groups group = new Groups();
-			group.setInstId(inst.getId());
-		    List<Groups>  groupsList = queryDynamicGroups(group);
-	        for(Groups g : groupsList) {
-	            _logger.debug("role {}" , g);
-	            refreshDynamicGroups(g);
-	        }
-		}
-	}
+    
+    @Override
+    public boolean deleteById(String groupId) {
+        this.delete(groupId);
+        groupMemberService.deleteByGroupId(groupId);
+        return true;
+    }
+    
+    @Override
+    public List<Groups> queryByUserId(String userId){
+        return this.getMapper().queryByUserId(userId);
+    }
+    
+    @Override
+    public void refreshDynamicGroups(Groups dynamicGroup){
+        if(dynamicGroup.getCategory().equals(Roles.Category.DYNAMIC)) {
+        	if(StringUtils.isNotBlank(dynamicGroup.getOrgIdsList())) {
+                dynamicGroup.setOrgIds(StrUtils.string2List(dynamicGroup.getOrgIdsList(), ","));
+                _logger.debug("OrgIds {}" , dynamicGroup.getOrgIds());
+            }
+            groupMemberService.deleteDynamicMember(dynamicGroup);
+            groupMemberService.addDynamicMember(dynamicGroup);
+        }
+    }
+    
+    @Override
+    public void refreshAllDynamicGroups(){
+        List<Institutions> instList = 
+                institutionsService.find("where status = ? ", new Object[]{ConstsStatus.ACTIVE}, new int[]{Types.INTEGER});
+        for(Institutions inst : instList) {
+            Groups group = new Groups();
+            group.setInstId(inst.getId());
+            List<Groups>  groupsList = queryDynamicGroups(group);
+            for(Groups g : groupsList) {
+                _logger.debug("role {}" , g);
+                refreshDynamicGroups(g);
+            }
+        }
+    }
 
 }

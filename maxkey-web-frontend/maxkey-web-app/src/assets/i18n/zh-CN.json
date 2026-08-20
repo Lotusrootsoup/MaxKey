@@ -15,6 +15,9 @@
 			"sign-in-with": "其他登录方式",
 			"signup": "用户注册",
 			"login": "登录",
+      "twoFactor": "二次身份认证",
+			"passkey-login": "Passkey登录",
+			"passkey-register": "注册Passkey",
 			"text.username": "用户名",
 			"text.mobile": "手机号码",
 			"text.password": "密码",
@@ -44,6 +47,7 @@
 				"": "配置",
 				"setting": "基本设置",
 				"profile": "我的资料",
+				"passkey": "Passkey 注册",
 				"mfa": "二次认证",
 				"socialsassociate": "社交关联",
 				"password": "密码修改",
@@ -51,8 +55,8 @@
 			},
 			"audit": {
 				"": "审计",
-				"logins": "系统登录日志",
-				"loginapps": "应用访问日志",
+				"logins": "登录日志",
+				"loginapps": "访问日志",
 				"synchronizer": "同步器日志",
 				"connector": "连接器日志",
 				"operate": "管理日志"

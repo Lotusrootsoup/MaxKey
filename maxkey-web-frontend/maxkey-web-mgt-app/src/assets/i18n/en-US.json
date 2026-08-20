@@ -64,13 +64,17 @@
 				"synchronizer": "Synchronizer",
 				"connector": "Connector",
 				"operate": "Management"
-			}
+			},
+			"website":"Official Website"
 		},
 		"home": {
 			"onlineUsers": "Online Users",
-			"dayCount": "Day Count",
 			"newUsers": "Month News",
 			"activeUsers": "Month Actives",
+			"totalUsers": "Users",
+			"totalDepts": "Depts",
+			"totalApps": "Apps",
+			"totalGroups": "Groups",
 			"dayAccessCount": "Today Access Count",
 			"monthAccessCount": "30 Day Access Count",
 			"monthAppCount": "30 Day TOP 10 App Access Count",
@@ -78,7 +82,7 @@
 			"monthProvinceAccessCount": "30 Day  TOP 10 Access Count",
 			"appName": "App",
 			"browser": "Browser",
-			"accessCount": "Count",
+			"accessCount": "Access Count",
 			"maptype.china":"China",
 			"maptype.world":"World",
 			"number": "Number",
@@ -275,6 +279,8 @@
 			"tab.custom": "Custom",
 			"extendapi.tab": "API",
 			"resources":"Resources",
+      "resourceMgt": "Resource Management",
+      "openapiRight": "OpenAPI Right",
 			"permission":"Permission",
 			"role":"Roles",
 			"id": "App Id",

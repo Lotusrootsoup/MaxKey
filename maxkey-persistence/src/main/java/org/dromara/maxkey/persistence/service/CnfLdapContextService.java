@@ -18,9 +18,9 @@
 package org.dromara.maxkey.persistence.service;
 
 import org.dromara.maxkey.entity.cnf.CnfLdapContext;
-import org.dromara.mybatis.jpa.IJpaService;
+import org.dromara.mybatis.jpa.service.IJpaService;
 
 
-public interface CnfLdapContextService  extends IJpaService<CnfLdapContext>{
+public interface CnfLdapContextService  extends IJpaService<CnfLdapContext,String>{
  
 }

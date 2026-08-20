@@ -20,6 +20,7 @@ package org.dromara.maxkey.authn.provider;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.dromara.maxkey.authn.LoginCredential;
 import org.dromara.maxkey.authn.SignPrincipal;
 import org.dromara.maxkey.authn.jwt.AuthTokenService;
@@ -30,6 +31,7 @@ import org.dromara.maxkey.authn.web.AuthorizationUtils;
 import org.dromara.maxkey.configuration.ApplicationConfig;
 import org.dromara.maxkey.constants.ConstsLoginType;
 import org.dromara.maxkey.constants.ConstsStatus;
+import org.dromara.maxkey.constants.ConstsTwoFactor;
 import org.dromara.maxkey.entity.idm.UserInfo;
 import org.dromara.maxkey.password.onetimepwd.AbstractOtpAuthn;
 import org.dromara.maxkey.password.onetimepwd.MailOtpAuthnService;
@@ -56,19 +58,19 @@ public abstract class AbstractAuthenticationProvider {
     public static String PROVIDER_SUFFIX = "AuthenticationProvider";
 
     public class AuthType{
-    	public static final  String NORMAL 	= "normal";
-    	public static final  String TFA 		= "tfa";
-    	public static final  String MOBILE 	= "mobile";
-    	public static final  String TRUSTED 	= "trusted";
+        public static final  String NORMAL     = "normal";
+        public static final  String TFA         = "tfa";
+        public static final  String MOBILE     = "mobile";
+        public static final  String TRUSTED     = "trusted";
         /**
          * 扫描认证
          */
-        public static final  String SCAN_CODE 	= "scancode";
+        public static final  String SCAN_CODE     = "scancode";
 
         /**
          * 手机端APP
          */
-        public static final  String APP 		= "app";
+        public static final  String APP         = "app";
     }
 
     protected ApplicationConfig applicationConfig;
@@ -93,17 +95,21 @@ public abstract class AbstractAuthenticationProvider {
 
     public abstract Authentication doAuthenticate(LoginCredential authentication);
 
+    public Authentication doTwoFactorAuthenticate(LoginCredential credential , UserInfo user) {
+        return null;
+    }
+    
     @SuppressWarnings("rawtypes")
     public boolean supports(Class authentication) {
         return (UsernamePasswordAuthenticationToken.class.isAssignableFrom(authentication));
     }
 
     public Authentication authenticate(LoginCredential authentication){
-    	return null;
+        return null;
     }
 
     public Authentication authenticate(LoginCredential authentication,boolean trusted) {
-    	return null;
+        return null;
     }
 
     /**
@@ -124,7 +130,7 @@ public abstract class AbstractAuthenticationProvider {
 
         for(GrantedAuthority administratorsAuthority : grantedAdministratorsAuthoritys) {
             if(grantedAuthoritys.contains(administratorsAuthority)) {
-            	principal.setRoleAdministrators(true);
+                principal.setRoleAdministrators(true);
                 _logger.trace("ROLE ADMINISTRATORS Authentication .");
             }
         }
@@ -134,7 +140,7 @@ public abstract class AbstractAuthenticationProvider {
 
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(
-                		principal,
+                        principal,
                         "PASSWORD",
                         grantedAuthoritys
                 );
@@ -147,6 +153,13 @@ public abstract class AbstractAuthenticationProvider {
          */
         session.setAuthentication(authenticationToken);
 
+        if(credential.getAuthType().equalsIgnoreCase(AuthType.NORMAL) 
+                && userInfo.getAuthnType() > ConstsTwoFactor.NONE ) {
+            //用户配置二次认证
+            principal.setTwoFactor(userInfo.getAuthnType());
+            this.sessionManager.createTwoFactor(session.getId(), session);
+        }
+        
         //create session
         this.sessionManager.create(session.getId(), session);
 
@@ -228,34 +241,47 @@ public abstract class AbstractAuthenticationProvider {
             loginUser.setDisplayName("not exist");
             loginUser.setLoginCount(0);
             authenticationRealm.insertLoginHistory(
-            			loginUser,
-            			ConstsLoginType.LOCAL,
-            			"",
-            			i18nMessage,
-            			WebConstants.LOGIN_RESULT.USER_NOT_EXIST);
+                        loginUser,
+                        ConstsLoginType.LOCAL,
+                        "",
+                        i18nMessage,
+                        WebConstants.LOGIN_RESULT.USER_NOT_EXIST);
             throw new BadCredentialsException(i18nMessage);
         }
         return true;
     }
 
     protected boolean statusValid(LoginCredential loginCredential , UserInfo userInfo) {
-    	if(userInfo.getIsLocked()==ConstsStatus.LOCK) {
-    		authenticationRealm.insertLoginHistory(
-    				userInfo,
+        if(userInfo.getIsLocked()==ConstsStatus.LOCK) {
+            authenticationRealm.insertLoginHistory(
+                    userInfo,
                     loginCredential.getAuthType(),
                     loginCredential.getProvider(),
                     loginCredential.getCode(),
                     WebConstants.LOGIN_RESULT.USER_LOCKED
                 );
-    	}else if(userInfo.getStatus()!=ConstsStatus.ACTIVE) {
-    		authenticationRealm.insertLoginHistory(
-    				userInfo,
+        }else if(userInfo.getStatus()!=ConstsStatus.ACTIVE) {
+            authenticationRealm.insertLoginHistory(
+                    userInfo,
                     loginCredential.getAuthType(),
                     loginCredential.getProvider(),
                     loginCredential.getCode(),
                     WebConstants.LOGIN_RESULT.USER_INACTIVE
                 );
-    	}
+        }
+        return true;
+    }
+    
+    /**
+     * check input otp empty.
+     * 
+     * @param password String
+     * @return
+     */
+    protected boolean emptyOtpCaptchaValid(String otpCaptcha) {
+        if (StringUtils.isBlank(otpCaptcha)) {
+            throw new BadCredentialsException(WebContext.getI18nValue("login.error.otpCaptcha.null"));
+        }
         return true;
     }
 

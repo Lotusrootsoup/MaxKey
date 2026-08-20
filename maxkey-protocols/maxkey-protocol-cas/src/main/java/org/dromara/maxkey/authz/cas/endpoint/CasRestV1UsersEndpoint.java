@@ -24,11 +24,11 @@ package org.dromara.maxkey.authz.cas.endpoint;
 import org.dromara.maxkey.authn.LoginCredential;
 import org.dromara.maxkey.authn.provider.AbstractAuthenticationProvider;
 import org.dromara.maxkey.authn.web.AuthorizationUtils;
-import org.dromara.maxkey.authz.cas.endpoint.response.ServiceResponseBuilder;
-import org.dromara.maxkey.authz.cas.endpoint.ticket.CasConstants;
-import org.dromara.maxkey.authz.cas.endpoint.ticket.TicketGrantingTicketImpl;
+import org.dromara.maxkey.authz.cas.response.ServiceResponseBuilder;
+import org.dromara.maxkey.authz.cas.ticket.CasConstants;
+import org.dromara.maxkey.authz.cas.ticket.TicketGrantingTicketImpl;
 import org.dromara.maxkey.entity.idm.UserInfo;
-import org.dromara.maxkey.web.HttpResponseConstants;
+import org.dromara.maxkey.http.HttpResponseConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,14 +55,14 @@ import jakarta.servlet.http.HttpServletResponse;
 @Tag(name = "2-4-CAS REST API文档模块")
 @Controller
 public class CasRestV1UsersEndpoint  extends CasBaseAuthorizeEndpoint{
-	static final Logger _logger = LoggerFactory.getLogger(CasRestV1UsersEndpoint.class);
-	
+    static final Logger _logger = LoggerFactory.getLogger(CasRestV1UsersEndpoint.class);
+    
     @Autowired
     @Qualifier("authenticationProvider")
     AbstractAuthenticationProvider authenticationProvider ;
-	   
+       
     @Operation(summary = "CAS REST认证接口", description = "用户名密码登录接口",method="POST")   
-	@PostMapping(value=CasConstants.ENDPOINT.ENDPOINT_REST_USERS_V1, 
+    @PostMapping(value=CasConstants.ENDPOINT.ENDPOINT_REST_USERS_V1, 
             consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public ResponseEntity<String> casLoginRestUsers(
             HttpServletRequest request,
@@ -70,7 +70,7 @@ public class CasRestV1UsersEndpoint  extends CasBaseAuthorizeEndpoint{
             @RequestParam(value=CasConstants.PARAMETER.SERVICE,required=false) String casService,
             @RequestParam(value=CasConstants.PARAMETER.REST_USERNAME,required=true) String username,
             @RequestParam(value=CasConstants.PARAMETER.REST_PASSWORD,required=true) String password){
-	    try {
+        try {
             if (password == null || password.isEmpty()) {
                 throw new BadCredentialsException("No credentials are provided or extracted to authenticate the REST request");
             }
@@ -116,5 +116,5 @@ public class CasRestV1UsersEndpoint  extends CasBaseAuthorizeEndpoint{
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-	
+    
 }

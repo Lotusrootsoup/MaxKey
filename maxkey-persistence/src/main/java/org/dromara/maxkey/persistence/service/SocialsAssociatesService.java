@@ -21,11 +21,11 @@ import java.util.List;
 
 import org.dromara.maxkey.entity.SocialsAssociate;
 import org.dromara.maxkey.entity.idm.UserInfo;
-import org.dromara.mybatis.jpa.IJpaService;
+import org.dromara.mybatis.jpa.service.IJpaService;
 
 
-public interface SocialsAssociatesService  extends IJpaService<SocialsAssociate>{
+public interface SocialsAssociatesService  extends IJpaService<SocialsAssociate,String>{
 
-	public List<SocialsAssociate>  queryByUser(UserInfo user);
-	 
+    public List<SocialsAssociate>  queryByUser(UserInfo user);
+     
 }

@@ -20,12 +20,14 @@ package org.dromara.maxkey.persistence.service;
 import java.util.List;
 
 import org.dromara.maxkey.entity.cnf.CnfPasswordPolicy;
-import org.dromara.mybatis.jpa.IJpaService;
+import org.dromara.mybatis.jpa.service.IJpaService;
 import org.passay.Rule;
 
-public interface CnfPasswordPolicyService  extends IJpaService<CnfPasswordPolicy>{
-	
-	public CnfPasswordPolicy getPasswordPolicy();
-	
-	public List<Rule> getPasswordPolicyRuleList();
+public interface CnfPasswordPolicyService  extends IJpaService<CnfPasswordPolicy,String>{
+    
+    public CnfPasswordPolicy getPasswordPolicy();
+    
+    public List<Rule> getPasswordPolicyRuleList();
+    
+    public void buildTipMessage(CnfPasswordPolicy passwordPolicy);
 }

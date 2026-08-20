@@ -35,35 +35,30 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
 @RequestMapping(value={"/api/idm/Users"})
 public class RestUserInfoController {
-	
-	static final Logger _logger = LoggerFactory.getLogger(RestUserInfoController.class);
-	
+    
+    static final Logger _logger = LoggerFactory.getLogger(RestUserInfoController.class);
+    
     @Autowired
     UserInfoService userInfoService;
     
     @GetMapping(value = "/{id}")
     public UserInfo getUser(
-                                       @PathVariable String id,
-                                       @RequestParam(required = false) String attributes) {
-    	_logger.debug("UserInfo id {} , attributes {}", id , attributes);
+                                       @PathVariable String id) {
+        _logger.debug("UserInfo id {}", id );
         UserInfo loadUserInfo = userInfoService.get(id);
         loadUserInfo.setDecipherable(null);
         return loadUserInfo;
     }
 
     @PostMapping
-    public UserInfo create(@RequestBody  UserInfo userInfo,
-                                                      @RequestParam(required = false) String attributes,
-                                                      UriComponentsBuilder builder) {
-    	_logger.debug("UserInfo content {} , attributes {}", userInfo , attributes);
+    public UserInfo create(@RequestBody  UserInfo userInfo) {
+        _logger.debug("UserInfo content {} ", userInfo );
         UserInfo loadUserInfo = userInfoService.findByUsername(userInfo.getUsername());
         if(loadUserInfo != null) {
             userInfoService.update(userInfo);
@@ -75,9 +70,8 @@ public class RestUserInfoController {
     
     @PutMapping(value = "/{id}")
     public UserInfo replace(@PathVariable String id,
-                                                       @RequestBody UserInfo userInfo,
-                                                       @RequestParam(required = false) String attributes) {
-    	_logger.debug("UserInfo content {} , attributes {}", userInfo , attributes);
+                                                       @RequestBody UserInfo userInfo) {
+        _logger.debug("UserInfo content {} ", userInfo );
         UserInfo loadUserInfo = userInfoService.findByUsername(userInfo.getUsername());
         if(loadUserInfo != null) {
             userInfoService.update(userInfo);
@@ -90,17 +84,17 @@ public class RestUserInfoController {
     @DeleteMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.OK)
     public void delete(@PathVariable final String id) {
-    	_logger.debug("UserInfo id {} ", id );
+        _logger.debug("UserInfo id {} ", id );
         userInfoService.delete(id);
     }
     
     @GetMapping(value = { "/.search" }, produces = {MediaType.APPLICATION_JSON_VALUE})
-	public Message<JpaPageResults<UserInfo>> search(@ModelAttribute UserInfo userInfo) {
-		_logger.debug("UserInfo {}",userInfo);
-		if(StringUtils.isBlank(userInfo.getInstId())){
-			userInfo.setInstId("1");
-    	}
-		return new Message<>(userInfoService.fetchPageResults(userInfo));
-	}
+    public Message<JpaPageResults<UserInfo>> search(@ModelAttribute UserInfo userInfo) {
+        _logger.debug("UserInfo {}",userInfo);
+        if(StringUtils.isBlank(userInfo.getInstId())){
+            userInfo.setInstId("1");
+        }
+        return new Message<>(userInfoService.fetchPageResults(userInfo));
+    }
 
 }

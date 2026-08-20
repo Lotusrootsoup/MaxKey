@@ -20,9 +20,14 @@
  
 rootProject.name = 'MaxKey'
 
-//Common
-include ('maxkey-common')
-include ('maxkey-core')
+//Commons
+include ('maxkey-commons:maxkey-cache')
+include ('maxkey-commons:maxkey-common')
+include ('maxkey-commons:maxkey-core')
+include ('maxkey-commons:maxkey-crypto')
+include ('maxkey-commons:maxkey-ldap')
+
+include ('maxkey-entity')
 include ('maxkey-persistence')
 
 //maxkey-starter
@@ -32,6 +37,8 @@ include ('maxkey-starter:maxkey-starter-otp')
 include ('maxkey-starter:maxkey-starter-sms')
 include ('maxkey-starter:maxkey-starter-social')
 include ('maxkey-starter:maxkey-starter-web')
+include ('maxkey-starter:maxkey-starter-web-static')
+include ('maxkey-starter:maxkey-starter-passkey')
 
 //authentications
 include ('maxkey-authentications:maxkey-authentication-core')
@@ -62,11 +69,11 @@ include ('maxkey-protocols:maxkey-protocol-saml-2.0')
 include ('maxkey-protocols:maxkey-protocol-tokenbased')
 
 //webs
-//gataway
-include ('maxkey-webs:maxkey-gataway')
 //maxkey(sign)
 include ('maxkey-webs:maxkey-web-maxkey')
 //management(mgt)
 include ('maxkey-webs:maxkey-web-mgt')
 //openapi(open)
 include ('maxkey-webs:maxkey-web-openapi')
+//gataway
+include ('maxkey-webs:maxkey-gataway')

@@ -18,12 +18,12 @@
 package org.dromara.maxkey.persistence.service;
 
 import org.dromara.maxkey.entity.history.HistoryLogin;
-import org.dromara.mybatis.jpa.IJpaService;
+import org.dromara.mybatis.jpa.service.IJpaService;
 import org.dromara.mybatis.jpa.entity.JpaPageResults;
 
-public interface HistoryLoginService  extends IJpaService<HistoryLogin>{
+public interface HistoryLoginService  extends IJpaService<HistoryLogin,String>{
 
-	public JpaPageResults<HistoryLogin> queryOnlineSession(HistoryLogin historyLogin);
-	
-	public void login(HistoryLogin historyLogin);
+    public JpaPageResults<HistoryLogin> queryOnlineSession(HistoryLogin historyLogin);
+    
+    public void login(HistoryLogin historyLogin);
 }

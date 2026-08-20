@@ -35,6 +35,7 @@
                 [(nzFileList)]="fileList"
                 nzName="uploadFile"
                 [nzShowButton]="fileList.length < 1"
+                [nzShowUploadList]="{ showPreviewIcon: true, showRemoveIcon: true }"
                 [nzPreview]="handlePreview"
                 (nzChange)="uploadImageChange($event)"
               >
@@ -338,7 +339,6 @@
               <nz-select [(ngModel)]="form.model.fileType" [ngModelOptions]="{ standalone: true }" nz-input name="fileType" id="fileType">
                 <nz-option nzValue="certificate" nzLabel="{{ 'mxk.apps.saml.fileType.certificate' | i18n }}"> </nz-option>
                 <nz-option nzValue="metadata_file" nzLabel="{{ 'mxk.apps.saml.fileType.metadata.file' | i18n }}"> </nz-option>
-                <nz-option nzValue="metadata_url" nzLabel="{{ 'mxk.apps.saml.fileType.metadata.url' | i18n }}"> </nz-option>
               </nz-select>
             </nz-form-control>
           </nz-form-item>
@@ -356,14 +356,6 @@
                   {{ 'mxk.text.upload' | i18n }}
                 </div>
               </nz-upload>
-              <input
-                *ngIf="form.model.fileType == 'metadata_url'"
-                [(ngModel)]="form.model.metaUrl"
-                [ngModelOptions]="{ standalone: true }"
-                nz-input
-                name="metaUrl"
-                id="metaUrl"
-              />
             </nz-form-control>
           </nz-form-item>
         </div>
@@ -508,6 +500,31 @@
                 name="adapter"
                 id="adapter"
               />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-row>
+          <nz-form-item>
+            <nz-form-label [nzSm]="8" [nzXs]="24" nzFor="resourceMgt">{{ 'mxk.apps.resourceMgt' | i18n }}</nz-form-label>
+            <nz-form-control [nzSm]="16" [nzMd]="16" [nzXs]="36" [nzXl]="48" nzErrorTip="The input is not valid resourceMgt!">
+              <nz-select [(ngModel)]="form.model.resourceMgt" [ngModelOptions]="{ standalone: true }" name="resourceMgt" id="resourceMgt">
+                <nz-option nzValue="n" nzLabel="{{ 'mxk.text.no' | i18n }}"></nz-option>
+                <nz-option nzValue="y" nzLabel="{{ 'mxk.text.yes' | i18n }}"></nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+          <nz-form-item>
+            <nz-form-label [nzSm]="8" [nzXs]="24" nzFor="openapiRight">{{ 'mxk.apps.openapiRight' | i18n }}</nz-form-label>
+            <nz-form-control [nzSm]="16" [nzMd]="16" [nzXs]="36" [nzXl]="48" nzErrorTip="The input is not valid openapiRight!">
+              <nz-select
+                [(ngModel)]="form.model.openapiRight"
+                [ngModelOptions]="{ standalone: true }"
+                name="openapiRight"
+                id="openapiRight"
+              >
+                <nz-option nzValue="read" nzLabel="Read"></nz-option>
+                <nz-option nzValue="write" nzLabel="Write"></nz-option>
+              </nz-select>
             </nz-form-control>
           </nz-form-item>
         </div>

@@ -32,44 +32,71 @@ import com.github.benmanes.caffeine.cache.Caffeine;
 
 
 @Repository
-public class InstitutionsServiceImpl  extends JpaServiceImpl<InstitutionsMapper,Institutions> implements InstitutionsService{
-	 static final Logger _logger = LoggerFactory.getLogger(InstitutionsServiceImpl.class);
-	 
+public class InstitutionsServiceImpl  extends JpaServiceImpl<InstitutionsMapper,Institutions,String> implements InstitutionsService{
+     static final Logger _logger = LoggerFactory.getLogger(InstitutionsServiceImpl.class);
+     
     private static final String DEFAULT_INSTID = "1";
 
     protected static final Cache<String, Institutions> institutionsStore =
             Caffeine.newBuilder()
-                	.expireAfterWrite(60, TimeUnit.MINUTES)
-                	.build();
+                    .expireAfterWrite(60, TimeUnit.MINUTES)
+                    .build();
     
-	 public Institutions findByDomain(String domain) {
-		 return getMapper().findByDomain(domain);
-	 }
-	 
-	 public Institutions get(String instIdOrDomain) {
-	        _logger.trace(" instId {}" , instIdOrDomain);
-	        Institutions inst = getByDomain(instIdOrDomain);
-	        if(inst == null) {//use default inst
-	        	inst = getByDomain(DEFAULT_INSTID);
-	        	institutionsStore.put(instIdOrDomain, inst);
-	        }
-	        return inst;
-	    }
+     @Override
+     public Institutions findByDomain(String domain) {
+         return getMapper().findByDomain(domain);
+     }
+     
+     @Override
+     public Institutions get(String instIdOrDomain) {
+            _logger.trace(" instId {}" , instIdOrDomain);
+            Institutions inst = getByDomain(instIdOrDomain);
+            if(inst == null) {//use default inst
+                inst = getByDomain(DEFAULT_INSTID);
+                institutionsStore.put(instIdOrDomain, inst);
+            }
+            return inst;
+        }
 
-	    private Institutions getByDomain(String instIdOrDomain) {
-	        _logger.trace(" instId {}" , instIdOrDomain);
-	        Institutions inst = institutionsStore.getIfPresent(instIdOrDomain);
-	        if(inst == null) {
-		        Institutions institution = findByDomain(instIdOrDomain);
-		        if(institution != null ) {
-		        	inst = institution;
-			        institutionsStore.put(inst.getDomain(), inst);
-			        institutionsStore.put(inst.getConsoleDomain(), inst);
-			        institutionsStore.put(inst.getId(), inst);
-		        }
-	        }
+        private Institutions getByDomain(String instIdOrDomain) {
+            _logger.trace(" instId {}" , instIdOrDomain);
+            Institutions inst = institutionsStore.getIfPresent(instIdOrDomain);
+            if(inst == null) {
+                Institutions institution = findByDomain(instIdOrDomain);
+                if(institution != null ) {
+                    inst = institution;
+                    institutionsStore.put(inst.getDomain(), inst);
+                    institutionsStore.put(inst.getConsoleDomain(), inst);
+                    institutionsStore.put(inst.getId(), inst);
+                }
+            }
 
-	        return inst;
-	    }
-	 
+            return inst;
+        }
+
+        @Override
+        public void clearInstitutionsCache(String instIdOrDomain) {
+            _logger.debug("clearInstitutionsCache instIdOrDomain: {}", instIdOrDomain);
+
+            // 先尝试从缓存中获取
+            Institutions inst = institutionsStore.getIfPresent(instIdOrDomain);
+
+            // 如果缓存中没有，从数据库查询
+            if(inst == null) {
+                inst = findByDomain(instIdOrDomain);
+            }
+
+            // 清除所有相关的缓存key
+            if(inst != null) {
+                institutionsStore.invalidate(inst.getDomain());
+                institutionsStore.invalidate(inst.getConsoleDomain());
+                institutionsStore.invalidate(inst.getId());
+                _logger.debug("Cleared cache for domain: {}, consoleDomain: {}, id: {}",
+                    inst.getDomain(), inst.getConsoleDomain(), inst.getId());
+            }
+
+            // 同时清除传入的key（可能是别名或其他key）
+            institutionsStore.invalidate(instIdOrDomain);
+        }
+
 }

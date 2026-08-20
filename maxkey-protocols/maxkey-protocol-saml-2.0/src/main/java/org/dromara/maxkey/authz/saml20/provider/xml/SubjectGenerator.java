@@ -36,117 +36,117 @@ import org.opensaml.saml2.core.impl.SubjectConfirmationDataBuilder;
 
 public class SubjectGenerator {
 
-	//private final XMLObjectBuilderFactory builderFactory = Configuration.getBuilderFactory();
-	private final TimeService timeService;
-		
-	public SubjectGenerator(TimeService timeService) {
-		super();
-		this.timeService = timeService;
-	}
+    //private final XMLObjectBuilderFactory builderFactory = Configuration.getBuilderFactory();
+    private final TimeService timeService;
+        
+    public SubjectGenerator(TimeService timeService) {
+        super();
+        this.timeService = timeService;
+    }
 
-	public Subject generateSubject( AppsSAML20Details saml20Details,
-							String assertionConsumerURL, 
-							String inResponseTo, 
-							int validInSeconds,
-							UserInfo userInfo) {
-		String nameIdValue = userInfo.getUsername();
-		String nameIDType = NameIDType.UNSPECIFIED;
-		if(saml20Details.getNameidFormat().equalsIgnoreCase("persistent")) {
-			nameIDType = NameIDType.PERSISTENT;
-		}else if(saml20Details.getNameidFormat().equalsIgnoreCase("transient")) {
-			nameIDType = NameIDType.TRANSIENT;
-        }else if(saml20Details.getNameidFormat().equalsIgnoreCase("unspecified")) {
-        	nameIDType = NameIDType.UNSPECIFIED;
-        }else if(saml20Details.getNameidFormat().equalsIgnoreCase("emailAddress")) {
-            if(userInfo.getEmail()!=null && !userInfo.getEmail().equals("")) {
+    public Subject generateSubject( AppsSAML20Details saml20Details,
+                            String assertionConsumerURL, 
+                            String inResponseTo, 
+                            int validInSeconds,
+                            UserInfo userInfo) {
+        String nameIdValue = userInfo.getUsername();
+        String nameIDType = NameIDType.UNSPECIFIED;
+        if("persistent".equalsIgnoreCase(saml20Details.getNameidFormat())) {
+            nameIDType = NameIDType.PERSISTENT;
+        }else if("transient".equalsIgnoreCase(saml20Details.getNameidFormat())) {
+            nameIDType = NameIDType.TRANSIENT;
+        }else if("unspecified".equalsIgnoreCase(saml20Details.getNameidFormat())) {
+            nameIDType = NameIDType.UNSPECIFIED;
+        }else if("emailAddress".equalsIgnoreCase(saml20Details.getNameidFormat())) {
+            if(userInfo.getEmail()!=null && !"".equals(userInfo.getEmail())) {
                 nameIdValue = userInfo.getEmail();
             }
             nameIDType = NameIDType.EMAIL;
-        }else if(saml20Details.getNameidFormat().equalsIgnoreCase("X509SubjectName")) {
-        	nameIDType = NameIDType.X509_SUBJECT;
-        }else if(saml20Details.getNameidFormat().equalsIgnoreCase("WindowsDomainQualifiedName")) {
-            if(userInfo.getWindowsAccount()!=null && !userInfo.getWindowsAccount().equals("")) {
+        }else if("X509SubjectName".equalsIgnoreCase(saml20Details.getNameidFormat())) {
+            nameIDType = NameIDType.X509_SUBJECT;
+        }else if("WindowsDomainQualifiedName".equalsIgnoreCase(saml20Details.getNameidFormat())) {
+            if(userInfo.getWindowsAccount()!=null && !"".equals(userInfo.getWindowsAccount())) {
                 nameIdValue = userInfo.getWindowsAccount();
             }
             nameIDType = NameIDType.WIN_DOMAIN_QUALIFIED;
-        }else if(saml20Details.getNameidFormat().equalsIgnoreCase("entity")) {
-        	nameIDType = NameIDType.ENTITY;
-        }else if(saml20Details.getNameidFormat().equalsIgnoreCase("custom")) {
+        }else if("entity".equalsIgnoreCase(saml20Details.getNameidFormat())) {
+            nameIDType = NameIDType.ENTITY;
+        }else if("custom".equalsIgnoreCase(saml20Details.getNameidFormat())) {
             
-        }else if(saml20Details.getNameidFormat().equalsIgnoreCase("Mobile")) {
-            if(userInfo.getMobile()!=null && !userInfo.getMobile().equals("")) {
+        }else if("Mobile".equalsIgnoreCase(saml20Details.getNameidFormat())) {
+            if(userInfo.getMobile()!=null && !"".equals(userInfo.getMobile())) {
                 nameIdValue = userInfo.getMobile();
             }
-        }else if(saml20Details.getNameidFormat().equalsIgnoreCase("EmployeeNumber")) {
-            if(userInfo.getEmployeeNumber()!=null && !userInfo.getEmployeeNumber().equals("")) {
+        }else if("EmployeeNumber".equalsIgnoreCase(saml20Details.getNameidFormat())) {
+            if(userInfo.getEmployeeNumber()!=null && !"".equals(userInfo.getEmployeeNumber())) {
                 nameIdValue = userInfo.getEmployeeNumber();
             }
         }
-		
-		if(!StringUtils.isEmpty(saml20Details.getNameIdSuffix())) {
-		    nameIdValue = nameIdValue + saml20Details.getNameIdSuffix();
-		}
-		
-		if(saml20Details.getNameIdConvert().equalsIgnoreCase("uppercase")) {
-		    nameIdValue = nameIdValue.toUpperCase();
-        }else if(saml20Details.getNameIdConvert().equalsIgnoreCase("lowercase")) {
+        
+        if(!StringUtils.isEmpty(saml20Details.getNameIdSuffix())) {
+            nameIdValue = nameIdValue + saml20Details.getNameIdSuffix();
+        }
+        
+        if("uppercase".equalsIgnoreCase(saml20Details.getNameIdConvert())) {
+            nameIdValue = nameIdValue.toUpperCase();
+        }else if("lowercase".equalsIgnoreCase(saml20Details.getNameIdConvert())) {
             nameIdValue = nameIdValue.toLowerCase();
         }else {
-        	//do nothing
+            //do nothing
         }
-		
-		NameID nameID = builderNameID(nameIdValue,assertionConsumerURL,nameIDType);
-		Subject subject =builderSubject(nameID);
-		
-		String clientAddress=WebContext.getRequestIpAddress(WebContext.getRequest());
-		SubjectConfirmation subjectConfirmation =builderSubjectConfirmation(
-								assertionConsumerURL,
-								inResponseTo,
-								validInSeconds,
-								clientAddress);
+        
+        NameID nameID = builderNameID(nameIdValue,assertionConsumerURL,nameIDType);
+        Subject subject =builderSubject(nameID);
+        
+        String clientAddress=WebContext.getRequestIpAddress(WebContext.getRequest());
+        SubjectConfirmation subjectConfirmation =builderSubjectConfirmation(
+                                assertionConsumerURL,
+                                inResponseTo,
+                                validInSeconds,
+                                clientAddress);
 
-		subject.getSubjectConfirmations().add(subjectConfirmation);
-		
-		return subject;
-	}
-	
-	public NameID builderNameID(String value,String strSPNameQualifier,String nameIDType){
-		//Response/Assertion/Subject/NameID	
-		NameID nameID = new NameIDBuilder().buildObject();
-		nameID.setValue(value);
-		//nameID.setFormat(NameIDType.PERSISTENT);
-		nameID.setFormat(nameIDType);
-		//nameID.setSPNameQualifier(strSPNameQualifier);
-		
-		return nameID;
-	}
-	
-	public Subject builderSubject (NameID nameID){
-		//Response/Assertion/Subject
-		Subject subject = new SubjectBuilder().buildObject();
-		subject.setNameID(nameID);
-		return subject;
-	}
-	
-	public SubjectConfirmation builderSubjectConfirmation(String recipient,String inResponseTo,int validInSeconds,String clientAddress){
-		//SubjectConfirmationBuilder subjectConfirmationBuilder = (SubjectConfirmationBuilder)builderFactory.getBuilder(SubjectConfirmation.DEFAULT_ELEMENT_NAME);
-		SubjectConfirmation subjectConfirmation = new SubjectConfirmationBuilder().buildObject();
-		subjectConfirmation.setMethod(SubjectConfirmation.METHOD_BEARER);
-		
-		//SubjectConfirmationDataBuilder subjectConfirmationDataBuilder = (SubjectConfirmationDataBuilder)builderFactory.getBuilder(SubjectConfirmationData.DEFAULT_ELEMENT_NAME);
-		SubjectConfirmationData subjectConfirmationData = new SubjectConfirmationDataBuilder().buildObject();
-		
-		subjectConfirmationData.setRecipient(recipient);
-		//if idp-init not need inResponseTo
-		if(null!=inResponseTo){
-			subjectConfirmationData.setInResponseTo(inResponseTo);
-		}
-		subjectConfirmationData.setNotOnOrAfter(timeService.getCurrentDateTime().plusSeconds(validInSeconds));
-		subjectConfirmationData.setAddress(clientAddress);
-		
-		subjectConfirmation.setSubjectConfirmationData(subjectConfirmationData);
-		
-		return subjectConfirmation;
-	}
-	
+        subject.getSubjectConfirmations().add(subjectConfirmation);
+        
+        return subject;
+    }
+    
+    public NameID builderNameID(String value,String strSPNameQualifier,String nameIDType){
+        //Response/Assertion/Subject/NameID    
+        NameID nameID = new NameIDBuilder().buildObject();
+        nameID.setValue(value);
+        //nameID.setFormat(NameIDType.PERSISTENT);
+        nameID.setFormat(nameIDType);
+        //nameID.setSPNameQualifier(strSPNameQualifier);
+        
+        return nameID;
+    }
+    
+    public Subject builderSubject (NameID nameID){
+        //Response/Assertion/Subject
+        Subject subject = new SubjectBuilder().buildObject();
+        subject.setNameID(nameID);
+        return subject;
+    }
+    
+    public SubjectConfirmation builderSubjectConfirmation(String recipient,String inResponseTo,int validInSeconds,String clientAddress){
+        //SubjectConfirmationBuilder subjectConfirmationBuilder = (SubjectConfirmationBuilder)builderFactory.getBuilder(SubjectConfirmation.DEFAULT_ELEMENT_NAME);
+        SubjectConfirmation subjectConfirmation = new SubjectConfirmationBuilder().buildObject();
+        subjectConfirmation.setMethod(SubjectConfirmation.METHOD_BEARER);
+        
+        //SubjectConfirmationDataBuilder subjectConfirmationDataBuilder = (SubjectConfirmationDataBuilder)builderFactory.getBuilder(SubjectConfirmationData.DEFAULT_ELEMENT_NAME);
+        SubjectConfirmationData subjectConfirmationData = new SubjectConfirmationDataBuilder().buildObject();
+        
+        subjectConfirmationData.setRecipient(recipient);
+        //if idp-init not need inResponseTo
+        if(null!=inResponseTo){
+            subjectConfirmationData.setInResponseTo(inResponseTo);
+        }
+        subjectConfirmationData.setNotOnOrAfter(timeService.getCurrentDateTime().plusSeconds(validInSeconds));
+        subjectConfirmationData.setAddress(clientAddress);
+        
+        subjectConfirmation.setSubjectConfirmationData(subjectConfirmationData);
+        
+        return subjectConfirmation;
+    }
+    
 }

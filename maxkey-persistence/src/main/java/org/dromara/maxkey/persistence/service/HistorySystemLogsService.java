@@ -19,12 +19,12 @@ package org.dromara.maxkey.persistence.service;
 
 import org.dromara.maxkey.entity.history.HistorySystemLogs;
 import org.dromara.maxkey.entity.idm.UserInfo;
-import org.dromara.mybatis.jpa.IJpaService;
+import org.dromara.mybatis.jpa.service.IJpaService;
 
-public interface HistorySystemLogsService  extends IJpaService<HistorySystemLogs>{
-	
-	public void insert(String topic,Object entity,String action,String result,UserInfo operator) ;
-	
-	public void insert(String topic,String message,String action,String result,UserInfo operator,Object entity) ;
-	
+public interface HistorySystemLogsService  extends IJpaService<HistorySystemLogs,String>{
+    
+    public void insert(String topic,Object entity,String action,String result,UserInfo operator) ;
+    
+    public void insert(String topic,String message,String action,String result,UserInfo operator,Object entity) ;
+    
 }

@@ -45,15 +45,22 @@ public class SmsOtpAuthn extends AbstractOtpAuthn {
     }
     
     public void setProperties(StandardEnvironment properties) {
-		this.properties = properties;
-	}
+        this.properties = properties;
+    }
 
-	protected void loadProperties() throws IOException {
+    protected void loadProperties() throws IOException {
 
     }
     
+    @Override
     public void initPropertys() {
         
+    }
+
+    @Override
+    public boolean validate(String sharedSecret, String token) {
+        // TODO Auto-generated method stub
+        return false;
     }
 
 }

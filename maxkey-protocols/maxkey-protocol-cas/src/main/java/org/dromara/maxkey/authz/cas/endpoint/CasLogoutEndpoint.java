@@ -22,7 +22,7 @@ package org.dromara.maxkey.authz.cas.endpoint;
 
 
 import org.apache.commons.lang3.StringUtils;
-import org.dromara.maxkey.authz.cas.endpoint.ticket.CasConstants;
+import org.dromara.maxkey.authz.cas.ticket.CasConstants;
 import org.dromara.maxkey.web.WebContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,23 +44,23 @@ import jakarta.servlet.http.HttpServletResponse;
 @Controller
 public class CasLogoutEndpoint  extends CasBaseAuthorizeEndpoint{
 
-	static final  Logger _logger = LoggerFactory.getLogger(CasLogoutEndpoint.class);
+    static final  Logger _logger = LoggerFactory.getLogger(CasLogoutEndpoint.class);
 
-	/**
-	 * for cas logout then redirect to logout
-	 * @param request
-	 * @param response
-	 * @param casService
-	 * @return
-	 */
-	@Operation(summary = "CAS注销接口", description = "CAS注销接口",method="GET")
-	@GetMapping(CasConstants.ENDPOINT.ENDPOINT_LOGOUT)
-	public ModelAndView logout(HttpServletRequest request , HttpServletResponse response,
-			@RequestParam(value = CasConstants.PARAMETER.SERVICE , required = false) String casService){
-		StringBuffer logoutUrl = new StringBuffer("/force/logout");
-		if(StringUtils.isNotBlank(casService)){
-			logoutUrl.append("?").append("redirect_uri=").append(casService);
-		}
-		return WebContext.forward(logoutUrl.toString());
-	}
+    /**
+     * for cas logout then redirect to logout
+     * @param request
+     * @param response
+     * @param casService
+     * @return
+     */
+    @Operation(summary = "CAS注销接口", description = "CAS注销接口",method="GET")
+    @GetMapping(CasConstants.ENDPOINT.ENDPOINT_LOGOUT)
+    public ModelAndView logout(HttpServletRequest request , HttpServletResponse response,
+            @RequestParam(value = CasConstants.PARAMETER.SERVICE , required = false) String casService){
+        StringBuffer logoutUrl = new StringBuffer("/force/logout");
+        if(StringUtils.isNotBlank(casService)){
+            logoutUrl.append("?").append("redirect_uri=").append(casService);
+        }
+        return WebContext.forward(logoutUrl.toString());
+    }
 }

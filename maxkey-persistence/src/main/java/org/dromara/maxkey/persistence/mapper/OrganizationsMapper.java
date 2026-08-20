@@ -22,10 +22,10 @@ import org.apache.ibatis.annotations.Update;
 import org.dromara.maxkey.entity.idm.Organizations;
 import org.dromara.mybatis.jpa.IJpaMapper;
 
-public interface OrganizationsMapper extends IJpaMapper<Organizations> {
+public interface OrganizationsMapper extends IJpaMapper<Organizations,String> {
 
-	public List<Organizations> queryOrgs(Organizations organization);
-	
-	@Update("update mxk_organizations set codepath = #{codePath} , namepath = #{namePath} where id = #{id}")
-	boolean updateNamePath(Organizations organization);
+    public List<Organizations> queryOrgs(Organizations organization);
+    
+    @Update("update mxk_organizations set codepath = #{codePath} , namepath = #{namePath} where id = #{id}")
+    boolean updateNamePath(Organizations organization);
 }

@@ -20,10 +20,10 @@
  */
 package org.dromara.maxkey.persistence.mapper;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.dromara.maxkey.entity.dto.InstDto;
 import org.dromara.mybatis.jpa.IJpaMapper;
 import org.dromara.mybatis.jpa.entity.JpaEntity;
 
@@ -32,26 +32,36 @@ import org.dromara.mybatis.jpa.entity.JpaEntity;
  * @author Crystal.sea
  *
  */
-public  interface ReportMapper extends IJpaMapper<JpaEntity> {
-	
-	public Integer analysisDay(HashMap<String,Object> reportParameter);
-	
-	public Integer analysisNewUsers(HashMap<String,Object> reportParameter);
-	
-	public Integer analysisOnlineUsers(HashMap<String,Object> reportParameter);
-	
-	public Integer analysisActiveUsers(HashMap<String,Object> reportParameter);
-	
-	public List<Map<String,Object>> analysisDayHour(HashMap<String,Object> reportParameter);
-	
-	public List<Map<String,Object>> analysisMonth(HashMap<String,Object> reportParameter);
-	
-	public List<Map<String,Object>> analysisBrowser(HashMap<String,Object> reportParameter);
-	
-	public List<Map<String,Object>> analysisApp(HashMap<String,Object> reportParameter );
-	
-	public List<Map<String,Object>> analysisProvince(HashMap<String,Object> reportParameter);
-	
-	public List<Map<String,Object>> analysisCountry(HashMap<String,Object> reportParameter);
-	
+public  interface ReportMapper extends IJpaMapper<JpaEntity,String> {
+    
+    public Integer analysisDayCount(InstDto inst);
+    
+    public Integer analysisMonthCount(InstDto inst);
+    
+    public Integer analysisNewUsers(InstDto inst);
+    
+    public Integer analysisOnlineUsers(InstDto inst);
+    
+    public Integer analysisActiveUsers(InstDto inst);
+    
+    public Integer totalUsers(InstDto inst);
+    
+    public Integer totalDepts(InstDto inst);
+    
+    public Integer totalApps(InstDto inst);
+    
+    public Integer totalGroups(InstDto inst);
+    
+    public List<Map<String,Object>> analysisDayHour(InstDto inst);
+    
+    public List<Map<String,Object>> analysisMonth(InstDto inst);
+    
+    public List<Map<String,Object>> analysisBrowser(InstDto inst);
+    
+    public List<Map<String,Object>> analysisApp(InstDto inst );
+    
+    public List<Map<String,Object>> analysisProvince(InstDto inst);
+    
+    public List<Map<String,Object>> analysisCountry(InstDto inst);
+    
 }

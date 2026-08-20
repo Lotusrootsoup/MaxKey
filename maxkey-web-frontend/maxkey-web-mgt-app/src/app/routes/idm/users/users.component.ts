@@ -325,6 +325,10 @@ export class UsersComponent implements OnInit {
     this.refreshTableCheckedStatus();
   }
 
+  tableHasCheckedItem(): boolean {
+    return this.query.tableCheckedId.size <= 0;
+  }
+
   openFolder(data: NzTreeNode | NzFormatEmitEvent): void {
     // do something if u want
     if (data instanceof NzTreeNode) {
@@ -340,6 +344,7 @@ export class UsersComponent implements OnInit {
   activeNode(data: NzFormatEmitEvent): void {
     this.treeNodes.activated = data.node!;
     this.query.params.departmentId = data.node!.key;
+    this.query.params.pageNumber = 1;
     this.fetch();
   }
 

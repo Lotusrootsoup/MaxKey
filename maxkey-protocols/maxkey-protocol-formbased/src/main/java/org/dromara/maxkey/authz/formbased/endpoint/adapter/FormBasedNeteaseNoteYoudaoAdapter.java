@@ -22,24 +22,27 @@ import java.util.Date;
 import org.dromara.maxkey.authz.endpoint.adapter.AbstractAuthorizeAdapter;
 import org.dromara.maxkey.crypto.DigestUtils;
 import org.dromara.maxkey.entity.apps.AppsFormBasedDetails;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.ModelAndView;
 
 public class FormBasedNeteaseNoteYoudaoAdapter extends AbstractAuthorizeAdapter {
+	private static final  Logger logger = LoggerFactory.getLogger(FormBasedNeteaseNoteYoudaoAdapter.class);
+    @Override
+    public Object generateInfo() {
+        return null;
+    }
 
-	@Override
-	public Object generateInfo() {
-		return null;
-	}
 
-
-	@Override
-	public ModelAndView authorize(ModelAndView modelAndView) {
-		modelAndView.setViewName("authorize/formbased_wy_youdao_sso_submint");
-		AppsFormBasedDetails details=(AppsFormBasedDetails)app;
-		modelAndView.addObject("username", account.getRelatedUsername());
-		modelAndView.addObject("password",  DigestUtils.md5Hex(account.getRelatedPassword()));
-		modelAndView.addObject("currentTime",  (new Date()).getTime());
-		return modelAndView;
-	}
+    @Override
+    public ModelAndView authorize(ModelAndView modelAndView) {
+        modelAndView.setViewName("authorize/formbased_wy_youdao_sso_submint");
+        AppsFormBasedDetails details = (AppsFormBasedDetails)app;
+        logger.debug("AppsFormBasedDetails {}",details);
+        modelAndView.addObject("username", account.getRelatedUsername());
+        modelAndView.addObject("password",  DigestUtils.md5Hex(account.getRelatedPassword()));
+        modelAndView.addObject("currentTime",  (new Date()).getTime());
+        return modelAndView;
+    }
 
 }

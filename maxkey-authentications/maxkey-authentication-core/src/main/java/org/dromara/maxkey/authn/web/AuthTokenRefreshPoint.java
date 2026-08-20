@@ -23,7 +23,6 @@ import org.dromara.maxkey.authn.jwt.AuthTokenService;
 import org.dromara.maxkey.authn.session.Session;
 import org.dromara.maxkey.authn.session.SessionManager;
 import org.dromara.maxkey.entity.Message;
-import org.dromara.maxkey.web.WebContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,47 +39,45 @@ import jakarta.servlet.http.HttpServletRequest;
 @RestController
 @RequestMapping(value = "/auth")
 public class AuthTokenRefreshPoint {
-	private static final  Logger _logger = LoggerFactory.getLogger(AuthTokenRefreshPoint.class);
-	
-	@Autowired
-	AuthTokenService authTokenService;
-	
-	@Autowired
-	AuthRefreshTokenService refreshTokenService;
-	
-	@Autowired
-	SessionManager sessionManager;
-	
-	@GetMapping(value={"/token/refresh"})
-	public ResponseEntity<?> refreshGet(HttpServletRequest request,
-			@RequestParam(name = "refresh_token", required = false) String refreshToken) {
-		return refresh(request,refreshToken);
-	}
-	
- 	@PostMapping(value={"/token/refresh"})
-	public ResponseEntity<?> refresh(HttpServletRequest request,
-			@RequestParam(name = "refresh_token", required = false) String refreshToken) {
- 		_logger.debug("try to refresh token " );
- 		_logger.trace("refresh token {} " , refreshToken);
- 		if(_logger.isTraceEnabled()) {WebContext.printRequest(request);}
- 		try {
-	 		if(refreshTokenService.validateJwtToken(refreshToken)) {
-	 			String sessionId = refreshTokenService.resolveJWTID(refreshToken);
-	 			_logger.trace("Try to  refresh sessionId [{}]" , sessionId);
-		 		Session session = sessionManager.refresh(sessionId);
-		 		if(session != null) {
-		 			AuthJwt authJwt = authTokenService.genAuthJwt(session.getAuthentication());
-		 			_logger.trace("Grant new token {}" , authJwt);
-		 			return new Message<AuthJwt>(authJwt).buildResponse();
-		 		}else {
-		 			_logger.debug("Session is timeout , sessionId [{}]" , sessionId);
-		 		}
-	 		}else {
-	 			_logger.debug("refresh token is not validate .");
-	 		}
- 		}catch(Exception e) {
- 			_logger.error("Refresh Exception !",e);
- 		}
- 		return new ResponseEntity<>("Refresh Token Fail !", HttpStatus.UNAUTHORIZED);
- 	}
+    private static final  Logger _logger = LoggerFactory.getLogger(AuthTokenRefreshPoint.class);
+    
+    @Autowired
+    AuthTokenService authTokenService;
+    
+    @Autowired
+    AuthRefreshTokenService refreshTokenService;
+    
+    @Autowired
+    SessionManager sessionManager;
+    
+    @GetMapping(value={"/token/refresh"})
+    public ResponseEntity<?> refreshGet(HttpServletRequest request,
+            @RequestParam(name = "refresh_token", required = false) String refreshToken) {
+        return refresh(request,refreshToken);
+    }
+    
+     @PostMapping(value={"/token/refresh"})
+    public ResponseEntity<?> refresh(HttpServletRequest request,
+            @RequestParam(name = "refresh_token", required = false) String refreshToken) {
+         _logger.debug("try to refresh token {}",refreshToken );
+         try {
+             if(refreshTokenService.validateJwtToken(refreshToken)) {
+                 String sessionId = refreshTokenService.resolveJWTID(refreshToken);
+                 _logger.trace("Try to  refresh sessionId [{}]" , sessionId);
+                 Session session = sessionManager.refresh(sessionId);
+                 if(session != null) {
+                     AuthJwt authJwt = authTokenService.genAuthJwt(session.getAuthentication());
+                     _logger.trace("Grant new token {}" , authJwt);
+                     return new Message<AuthJwt>(authJwt).buildResponse();
+                 }else {
+                     _logger.debug("Session is timeout , sessionId [{}]" , sessionId);
+                 }
+             }else {
+                 _logger.debug("refresh token is not validate .");
+             }
+         }catch(Exception e) {
+             _logger.error("Refresh Exception !",e);
+         }
+         return new ResponseEntity<>(new Message<>(Message.FAIL,"Refresh Token Fail !"), HttpStatus.UNAUTHORIZED);
+     }
 }

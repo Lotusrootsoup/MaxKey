@@ -22,19 +22,19 @@ import java.util.List;
 import org.dromara.maxkey.entity.idm.GroupMember;
 import org.dromara.maxkey.entity.idm.Groups;
 import org.dromara.maxkey.entity.idm.UserInfo;
-import org.dromara.mybatis.jpa.IJpaService;
+import org.dromara.mybatis.jpa.service.IJpaService;
 import org.dromara.mybatis.jpa.entity.JpaPageResults;
 
-public interface GroupMemberService  extends IJpaService<GroupMember>{
+public interface GroupMemberService  extends IJpaService<GroupMember,String>{
 
-	public int addDynamicMember(Groups dynamicGroup) ;
-	
-	public int deleteDynamicMember(Groups dynamicGroup) ;
-	
-	public int deleteByGroupId(String groupId);
-	
-	public List<UserInfo> queryMemberByGroupId(String groupId);
-	
-	public JpaPageResults<Groups> noMember(GroupMember entity) ;
-	
+    public int addDynamicMember(Groups dynamicGroup) ;
+    
+    public int deleteDynamicMember(Groups dynamicGroup) ;
+    
+    public int deleteByGroupId(String groupId);
+    
+    public List<UserInfo> queryMemberByGroupId(String groupId);
+    
+    public JpaPageResults<Groups> noMember(GroupMember entity) ;
+    
 }

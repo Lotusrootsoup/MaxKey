@@ -21,41 +21,43 @@ import javax.crypto.spec.SecretKeySpec;
  * @author Luke Taylor
  */
 public class MacSigner implements SignerVerifier {
-	private static final String DEFAULT_ALGORITHM = "HMACSHA256";
+    private static final String DEFAULT_ALGORITHM = "HMACSHA256";
 
-	private final String algorithm;
-	private final SecretKey key;
+    private final String algorithm;
+    private final SecretKey key;
 
-	public MacSigner(byte[] key) {
-		this(new SecretKeySpec(key, DEFAULT_ALGORITHM));
-	}
+    public MacSigner(byte[] key) {
+        this(new SecretKeySpec(key, DEFAULT_ALGORITHM));
+    }
 
-	public MacSigner(String key) {
-		this(new SecretKeySpec(key.getBytes(), DEFAULT_ALGORITHM));
-	}
+    public MacSigner(String key) {
+        this(new SecretKeySpec(key.getBytes(), DEFAULT_ALGORITHM));
+    }
 
-	public MacSigner(SecretKey key) {
-		this(DEFAULT_ALGORITHM, key);
-	}
+    public MacSigner(SecretKey key) {
+        this(DEFAULT_ALGORITHM, key);
+    }
 
-	public MacSigner(String algorithm, SecretKey key) {
-		this.key = key;
-		this.algorithm = algorithm;
-	}
+    public MacSigner(String algorithm, SecretKey key) {
+        this.key = key;
+        this.algorithm = algorithm;
+    }
 
-//	val keyLength = key.getEncoded.length * 8
+//    val keyLength = key.getEncoded.length * 8
 
-	public byte[] sign(byte[] bytes) {
-		try {
-			Mac mac = Mac.getInstance(algorithm);
-			mac.init(key);
-			return mac.doFinal(bytes);
-		}
-		catch (GeneralSecurityException e) {
-			throw new RuntimeException(e);
-		}
-	}
+    @Override
+    public byte[] sign(byte[] bytes) {
+        try {
+            Mac mac = Mac.getInstance(algorithm);
+            mac.init(key);
+            return mac.doFinal(bytes);
+        }
+        catch (GeneralSecurityException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
+  @Override
   public void verify(byte[] content, byte[] signature) {
     byte[] signed = sign(content);
     if (!isEqual(signed, signature)) {
@@ -75,12 +77,13 @@ public class MacSigner implements SignerVerifier {
     return xor == 0;
   }
 
-	public String algorithm() {
-		return algorithm;
-	}
+    @Override
+    public String algorithm() {
+        return algorithm;
+    }
 
-	@Override
-	public String toString() {
-		return "MacSigner: " + algorithm;
-	}
+    @Override
+    public String toString() {
+        return "MacSigner: " + algorithm;
+    }
 }

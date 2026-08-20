@@ -19,10 +19,10 @@ package org.dromara.maxkey.persistence.service;
 
 import org.dromara.maxkey.entity.Register;
 import org.dromara.maxkey.entity.idm.UserInfo;
-import org.dromara.mybatis.jpa.IJpaService;
+import org.dromara.mybatis.jpa.service.IJpaService;
 
-public interface RegisterService  extends IJpaService<Register>{
+public interface RegisterService  extends IJpaService<Register,String>{
 
-	public UserInfo findByEmail(String email);
-	
+    public UserInfo findByEmail(String email);
+    
 }

@@ -20,29 +20,16 @@ package org.dromara.maxkey.persistence.service;
 import java.util.List;
 
 import org.dromara.maxkey.entity.Accounts;
-import org.dromara.maxkey.entity.AccountsStrategy;
-import org.dromara.maxkey.entity.idm.UserInfo;
-import org.dromara.mybatis.jpa.IJpaService;
+import org.dromara.mybatis.jpa.service.IJpaService;
 
-public interface AccountsService  extends IJpaService<Accounts>{
+public interface AccountsService  extends IJpaService<Accounts,String>{
 
    public boolean updateStatus(Accounts accounts) ;
    
    public boolean remove(String id) ;
    
-   public void refreshByStrategy(AccountsStrategy strategy) ;
-   
-   public void refreshAllByStrategy() ;
-   
-   public List<UserInfo> queryUserNotInStrategy(AccountsStrategy strategy);
-   
-   public long deleteByStrategy(AccountsStrategy strategy) ;
-	
    public List<Accounts> queryByAppIdAndDate(Accounts account) ;
    
    public List<Accounts> queryByAppIdAndAccount(String appId,String relatedUsername);
-   
-   public String generateAccount(UserInfo  userInfo,AccountsStrategy accountsStrategy) ;
   
-	
 }

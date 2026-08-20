@@ -31,9 +31,9 @@ import org.dromara.mybatis.jpa.IJpaMapper;
  *
  */
 
-public  interface RegisterMapper extends IJpaMapper<Register> {
-	
+public  interface RegisterMapper extends IJpaMapper<Register,String> {
+    
 
-	public List<UserInfo> findByEmail(String email);
+    public List<UserInfo> findByEmail(String email);
 
 }

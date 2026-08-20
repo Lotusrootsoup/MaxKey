@@ -85,6 +85,10 @@ public abstract class AbstractAuthenticationRealm {
     public UserInfo loadUserInfo(String username, String password) {
         return loginService.find(username, password);
     }
+    
+    public UserInfo loadUserInfoById(String userId) {
+        return loginService.findById(userId);
+    }
 
     public abstract boolean passwordMatches(UserInfo userInfo, String password);
     
@@ -127,8 +131,8 @@ public abstract class AbstractAuthenticationRealm {
         historyLogin.setSessionStatus(7);
         Authentication  authentication  = (Authentication ) WebContext.getAttribute(WebConstants.AUTHENTICATION);
         if(authentication != null 
-        		&& authentication.getPrincipal() instanceof SignPrincipal) {
-        	  historyLogin.setSessionStatus(1);
+                && authentication.getPrincipal() instanceof SignPrincipal) {
+              historyLogin.setSessionStatus(1);
               historyLogin.setSessionId(userInfo.getSessionId());
         }
         
@@ -153,15 +157,15 @@ public abstract class AbstractAuthenticationRealm {
         
         Region ipRegion =ipLocationParser.region(userInfo.getLastLoginIp());
         if(ipRegion != null) {
-        	historyLogin.setCountry(ipRegion.getCountry());
-        	historyLogin.setProvince(ipRegion.getProvince());
-        	historyLogin.setCity(ipRegion.getCity());
-        	historyLogin.setLocation(ipRegion.getAddr());
+            historyLogin.setCountry(ipRegion.getCountry());
+            historyLogin.setProvince(ipRegion.getProvince());
+            historyLogin.setCity(ipRegion.getCity());
+            historyLogin.setLocation(ipRegion.getAddr());
         }
         historyLoginService.login(historyLogin);
         
         if(WebConstants.LOGIN_RESULT.SUCCESS.equalsIgnoreCase(message)) {
-        	loginService.updateLastLogin(userInfo);
+            loginService.updateLastLogin(userInfo);
         }
 
         return true;

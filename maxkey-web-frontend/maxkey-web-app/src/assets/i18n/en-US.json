@@ -15,6 +15,9 @@
 			"sign-in-with": "Sign in with",
 			"signup": "Sign up",
 			"login": "Login",
+      "twoFactor": "2-Factor Authentication",
+			"passkey-login": "Passkey Login",
+			"passkey-register": "Register Passkey",
 			"text.username": "Username",
 			"text.mobile": "Mobile Number",
 			"text.password": "Password",
@@ -44,6 +47,7 @@
 				"": "Settings",
 				"setting": "Setting",
 				"profile": "Profile",
+				"passkey": "Passkey Registration",
 				"mfa": "MFA",
 				"password": "Password",
 				"socialsassociate": "Socials",
@@ -52,7 +56,7 @@
 			"audit": {
 				"": "Audits",
 				"logins": "Logins",
-				"loginapps": "LoginApps"
+				"loginapps": "AccessApps"
 			},
 			"mgt": "Management"
 		},

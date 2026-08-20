@@ -37,12 +37,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.converter.json.MappingJacksonValue;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
@@ -51,108 +53,108 @@ import org.springframework.web.util.UriComponentsBuilder;
 @RestController
 @RequestMapping(value = "/api/idm/SCIM/v2/Groups")
 public class ScimGroupController {
-	static final  Logger _logger = LoggerFactory.getLogger(ScimGroupController.class);
-	
-	@Autowired
-	GroupsService groupsService;
-	
-	@Autowired
-	GroupMemberService groupMemberService;
-	
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public MappingJacksonValue get(@PathVariable String id,
+    static final  Logger _logger = LoggerFactory.getLogger(ScimGroupController.class);
+    
+    @Autowired
+    GroupsService groupsService;
+    
+    @Autowired
+    GroupMemberService groupMemberService;
+    
+    @GetMapping(value = "/{id}")
+    public ScimGroup get(@PathVariable String id,
                                    @RequestParam(required = false) String attributes) {
-    	_logger.debug("ScimGroup id {} , attributes {}", id , attributes);
-    	Groups group    = groupsService.get(id);
-    	ScimGroup  scimGroup = group2ScimGroup(group);
-    	List<UserInfo>  userList = groupMemberService.queryMemberByGroupId(id);
-    	if(userList != null && userList.size() > 0) {
-    		Set<ScimMemberRef> members = new HashSet<ScimMemberRef>();
-    		for (UserInfo user : userList) {
-    			members.add(new ScimMemberRef(user.getDisplayName(),user.getId()));
-    		}
-    		scimGroup.setMembers(members);
-    	}
-        return new MappingJacksonValue(scimGroup);
+        _logger.debug("ScimGroup id {} , attributes {}", id , attributes);
+        Groups group    = groupsService.get(id);
+        ScimGroup  scimGroup = group2ScimGroup(group);
+        List<UserInfo>  userList = groupMemberService.queryMemberByGroupId(id);
+        if(userList != null && userList.size() > 0) {
+            Set<ScimMemberRef> members = new HashSet<ScimMemberRef>();
+            for (UserInfo user : userList) {
+                members.add(new ScimMemberRef(user.getDisplayName(),user.getId()));
+            }
+            scimGroup.setMembers(members);
+        }
+        return scimGroup;
     }
 
-    @RequestMapping(method = RequestMethod.POST)
-    public MappingJacksonValue create(@RequestBody  ScimGroup scimGroup,
+    @PostMapping
+    public ScimGroup create(@RequestBody  ScimGroup scimGroup,
                                       @RequestParam(required = false) String attributes,
                                       UriComponentsBuilder builder) throws IOException {
-    	_logger.debug("ScimGroup content {} , attributes {}", scimGroup , attributes);
-    	Groups  group =scimGroup2Role(scimGroup);
-    	groupsService.insert(group);
+        _logger.debug("ScimGroup content {} , attributes {}", scimGroup , attributes);
+        Groups  group =scimGroup2Role(scimGroup);
+        groupsService.insert(group);
         return get(group.getId(),attributes);
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-    public MappingJacksonValue  replace(@PathVariable String id,
+    @PutMapping(value = "/{id}")
+    public ScimGroup  replace(@PathVariable String id,
                                         @RequestBody ScimGroup scimGroup,
                                         @RequestParam(required = false) String attributes)
-                                        		throws IOException {
-    	_logger.debug("ScimGroup content {} , attributes {}", scimGroup , attributes);
-    	Groups  group =scimGroup2Role(scimGroup);
-    	groupsService.update(group);
+                                                throws IOException {
+        _logger.debug("ScimGroup content {} , attributes {}", scimGroup , attributes);
+        Groups  group =scimGroup2Role(scimGroup);
+        groupsService.update(group);
         return get(group.getId(),attributes);
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    @DeleteMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.OK)
     public void delete(@PathVariable final String id) {
-    	_logger.debug("ScimGroup id {} " , id);
-    	groupsService.delete(id);
+        _logger.debug("ScimGroup id {} " , id);
+        groupsService.delete(id);
     }
 
-    @RequestMapping(method = RequestMethod.GET)
-    public MappingJacksonValue searchWithGet(@ModelAttribute ScimParameters requestParameters) {
+    @GetMapping
+    public ScimSearchResult<ScimGroup> searchWithGet(@ModelAttribute ScimParameters requestParameters) {
         return searchWithPost(requestParameters);
     }
 
-    @RequestMapping(value = "/.search", method = RequestMethod.POST)
-    public MappingJacksonValue searchWithPost(@ModelAttribute ScimParameters requestParameters) {
-    	requestParameters.parse();
-    	_logger.debug("requestParameters {} ",requestParameters);
-    	Groups queryModel = new Groups();
-    	queryModel.setPageSize(requestParameters.getCount());
-    	queryModel.calculate(requestParameters.getStartIndex()); 
+    @PostMapping(value = "/.search")
+    public ScimSearchResult<ScimGroup> searchWithPost(@ModelAttribute ScimParameters requestParameters) {
+        requestParameters.parse();
+        _logger.debug("requestParameters {} ",requestParameters);
+        Groups queryModel = new Groups();
+        queryModel.setPageSize(requestParameters.getCount());
+        queryModel.calculate(requestParameters.getStartIndex()); 
         
         JpaPageResults<Groups> orgResults = groupsService.fetchPageResults(queryModel);
         List<ScimGroup> resultList = new ArrayList<ScimGroup>();
         for(Groups group : orgResults.getRows()) {
-        	resultList.add(group2ScimGroup(group));
+            resultList.add(group2ScimGroup(group));
         }
         ScimSearchResult<ScimGroup> scimSearchResult = 
-        		new ScimSearchResult<ScimGroup>(
-        				resultList,
-        				orgResults.getRecords(),
-        				queryModel.getPageSize(),
-        				requestParameters.getStartIndex());  
-        return new MappingJacksonValue(scimSearchResult);
+                new ScimSearchResult<ScimGroup>(
+                        resultList,
+                        orgResults.getRecords(),
+                        queryModel.getPageSize(),
+                        requestParameters.getStartIndex());  
+        return scimSearchResult;
     }
     
     public ScimGroup group2ScimGroup(Groups group) {
-    	ScimGroup scimGroup = new ScimGroup();
-    	scimGroup.setId(group.getId());
-    	scimGroup.setExternalId(group.getId());
-    	scimGroup.setDisplayName(group.getGroupName());
-    	
-    	ScimMeta meta = new ScimMeta("Group");
+        ScimGroup scimGroup = new ScimGroup();
+        scimGroup.setId(group.getId());
+        scimGroup.setExternalId(group.getId());
+        scimGroup.setDisplayName(group.getGroupName());
+        
+        ScimMeta meta = new ScimMeta("Group");
         if(group.getCreatedDate()!= null){
-        	meta.setCreated(group.getCreatedDate());
+            meta.setCreated(group.getCreatedDate());
         }
         if(group.getModifiedDate()!= null){
-        	meta.setLastModified(group.getModifiedDate());
+            meta.setLastModified(group.getModifiedDate());
         }
         scimGroup.setMeta(meta);
         
-    	return scimGroup;
+        return scimGroup;
     }
     
     public Groups scimGroup2Role(ScimGroup scimGroup) {
-    	Groups group = new Groups();
-    	group.setId(scimGroup.getId());
-    	group.setGroupName(scimGroup.getDisplayName());
-    	return group;
+        Groups group = new Groups();
+        group.setId(scimGroup.getId());
+        group.setGroupName(scimGroup.getDisplayName());
+        return group;
     }
 }

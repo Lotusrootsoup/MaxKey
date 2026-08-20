@@ -18,6 +18,10 @@
 package org.dromara.maxkey.web.contorller;
 
 import com.google.code.kaptcha.Producer;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 import java.awt.image.BufferedImage;
 import org.apache.commons.lang3.StringUtils;
 import org.dromara.maxkey.authn.jwt.AuthTokenService;
@@ -38,6 +42,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author Crystal.Sea
  *
  */
+@Tag(name = "验证码模块")
 @RestController
 public class ImageCaptchaEndpoint {
     private static final Logger _logger = LoggerFactory.getLogger(ImageCaptchaEndpoint.class);
@@ -46,10 +51,10 @@ public class ImageCaptchaEndpoint {
     Producer captchaProducer;
     
     @Autowired 
-	MomentaryService momentaryService;
+    MomentaryService momentaryService;
     
     @Autowired
-	AuthTokenService authTokenService;
+    AuthTokenService authTokenService;
 
     /**
      * captcha image Producer.
@@ -57,34 +62,35 @@ public class ImageCaptchaEndpoint {
      * @param request HttpServletRequest
      * @param response HttpServletResponse
      */
+    @Operation(summary = "图片验证码接口", description = "图片验证码接口",method="GET")
     @GetMapping(value={"/captcha"}, produces = {MediaType.APPLICATION_JSON_VALUE})
     public  Message<ImageCaptcha> captchaHandleRequest( 
-    			@RequestParam(value="captcha",required=false,defaultValue="text") String captchaType,
-    			@RequestParam(value="state",required=false,defaultValue="state") String state) {
+                @RequestParam(value="captcha",required=false,defaultValue="text") String captchaType,
+                @RequestParam(required=false,defaultValue="state") String state) {
         try {
             String kaptchaText = captchaProducer.createText();
             String kaptchaValue = kaptchaText;
-            if (captchaType.equalsIgnoreCase("Arithmetic")) {
-            	//去除0，增加计算复杂度
-            	kaptchaText = kaptchaText.replace("0", "");
+            if ("Arithmetic".equalsIgnoreCase(captchaType)) {
+                //去除0，增加计算复杂度
+                kaptchaText = kaptchaText.replace("0", "");
                 Integer minuend = Integer.valueOf(kaptchaText.substring(0, 1));
                 Integer subtrahend = Integer.valueOf(kaptchaText.substring(1, 2));
                 if (minuend - subtrahend > 0) {
-                	kaptchaValue = (minuend - subtrahend ) + "";
+                    kaptchaValue = (minuend - subtrahend ) + "";
                     kaptchaText = minuend + "-" + subtrahend + "=?";
                 } else {
-                	kaptchaValue = (minuend + subtrahend) + "";
+                    kaptchaValue = (minuend + subtrahend) + "";
                     kaptchaText = minuend + "+" + subtrahend + "=?";
                 }
             }
             String kaptchaKey = "";
-            if(StringUtils.isNotBlank(state) && !state.equalsIgnoreCase("state")) {
-            	//just validate state Token
-            	if(!authTokenService.validateJwtToken(state)) {
-            		return new Message<>(Message.FAIL,"JwtToken is not Validate  ");
-            	}
+            if(StringUtils.isNotBlank(state) && !"state".equalsIgnoreCase(state)) {
+                //just validate state Token
+                if(!authTokenService.validateJwtToken(state)) {
+                    return new Message<>(Message.FAIL,"JwtToken is not Validate  ");
+                }
             }else {
-            	state = authTokenService.genRandomJwt();
+                state = authTokenService.genRandomJwt();
             }
             kaptchaKey = authTokenService.resolveJWTID(state);
             _logger.trace("kaptchaKey {} , Captcha Text is {}" ,kaptchaKey, kaptchaValue);
@@ -92,7 +98,7 @@ public class ImageCaptchaEndpoint {
             momentaryService.put("", kaptchaKey, kaptchaValue);
             // create the image with the text
             BufferedImage bufferedImage = captchaProducer.createImage(kaptchaText);
-			String b64Image = Base64Utils.encodeImage(bufferedImage);
+            String b64Image = Base64Utils.encodeImage(bufferedImage);
            
             _logger.trace("b64Image {}" , b64Image);
             
@@ -103,7 +109,7 @@ public class ImageCaptchaEndpoint {
         return new Message<>(Message.FAIL);
     }
 
-	public void setCaptchaProducer(Producer captchaProducer) {
+    public void setCaptchaProducer(Producer captchaProducer) {
         this.captchaProducer = captchaProducer;
     }
 
